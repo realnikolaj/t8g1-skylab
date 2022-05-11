@@ -1,0 +1,28 @@
+baseURL = "https://realnikolaj.github.io/G6_Retsinformation/"
+title = "Visualisation, analysis and NLP of Danish legislation"
+description = "Analysis and network mapping of the danish law texts implemented or ammendet as a result of the 2019-2022 corona pandemic"
+relativeURLs = true
+theme = "theme"
+[params]
+    authors = ["Nikolaj S. Povlsen, Steffen Holm Cordes, Johan Fredrik Bjørnland"]
+    notebook = "/explainer-notebook.html"
+    data = "https://www.retsinformation.dk"
+    github = "https://github.com/realnikolaj/G6_Retsinformation"
+    [[params.nav]]
+        label = "Data"
+        link = "/data-description"
+    [[params.nav]]
+        label = "Network"
+        link = "/network-analysis"
+    [[params.nav]]
+        label = "Text"
+        link = "/text-analysis"
+    [[params.nav]]
+        label = "Conclusion and Future"
+        link = "/future-perspectives"
+    [[params.nav]]
+        label = "About"
+        link = "/about"
+
+
+

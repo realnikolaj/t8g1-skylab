@@ -26,7 +26,6 @@ h2{
 .cardContainer {
    display: flex;
    flex-direction: row;
-   flex-wrap: wrap;
    width: 100%;
 }
 
@@ -39,7 +38,7 @@ h2{
     <div class="card">
         <h2>VM@Group</h2>
         <ul>
-            <li>Docker worker node</li>
+            <li>Docker swarm manager</li>
             <li>Squid proxy container</li>
             <li>Firewall</li>
             <li>DHCP server</li>

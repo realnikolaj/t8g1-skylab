@@ -3,8 +3,6 @@ title: IT@T8G1-Skylab
 layout: single
 next: Group-vm
 ---
-## This project consists of four main clustering nodes
-### See task list bellow
 <style>
 
 h2{
@@ -29,8 +27,6 @@ h2{
    flex-direction: row;
    width: 100%;
 }
-
-/* Add some padding inside the card container */
 
 <div class="cardContainer">
     <div class="card">
@@ -72,7 +68,11 @@ h2{
     </div>
 </div>
 
+/* Add some padding inside the card container */
+
 </style>
+## This project consists of four main clustering nodes
+### See task list bellow the cards
 
 # At T8G1-Skylab we host, deploy and maintain services used by workers throughout the organization. Our philosophy is:  
 > Can it be written into a feature request - then we can deploy it.

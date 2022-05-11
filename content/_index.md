@@ -1,7 +1,7 @@
 ---
 title: IT@T8G1-Skylab
 layout: single
-next: Group-vm
+next: group-vm
 ---
 <style>
 

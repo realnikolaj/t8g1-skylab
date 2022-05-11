@@ -1,6 +1,6 @@
 ---
 title: About
-prev: Emin-vm
+prev: emin-vm
 ---
 Group T8G1
 

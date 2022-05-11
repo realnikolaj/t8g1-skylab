@@ -6,20 +6,20 @@ theme = "theme"
 [params]
     authors = ["Nikolaj S. Povlsen, Saif, Emin"]
     notebook = "/explainer-notebook.html"
-    data = "https://doc.opensuse.org/"
+    data = "https://doc.opensuse.org"
     github = "https://github.com/realnikolaj/t8g1-skylab"
     [[params.nav]]
         label = "Group vm"
-        link = "/Group-vm"
+        link = "/group-vm"
     [[params.nav]]
         label = "Saif vm"
-        link = "/Saif-vm"
+        link = "/saif-vm"
     [[params.nav]]
         label = "Nikolaj vm"
-        link = "/Nikolaj-vm"
+        link = "/nikolaj-vm"
     [[params.nav]]
         label = "Emin vm"
-        link = "/Emin-vm"
+        link = "/emin-vm"
     [[params.nav]]
         label = "About"
         link = "/about"

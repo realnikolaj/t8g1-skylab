@@ -1,6 +1,6 @@
 ---
 title: VM@Emin
-prev: Nikolaj-vm
+prev: nikolaj-vm
 next: about
 ---
 

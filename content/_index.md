@@ -12,8 +12,8 @@ h2{
   /* Add shadows to create the "card" effect */
     box-shadow: 0 6px 10px 0 rgba(0,0,0,0.3);
     transition: 0.3s;
-    padding: 12px 20px;
-    margin: 16px;
+    padding: 10px 10px;
+    margin: 8px;
     border-radius: 15px;
 }
 
@@ -31,50 +31,51 @@ h2{
 
 /* Add some padding inside the card container */
 
-</style>
+#double li  {width:50%; display:inline flex} <span class="group-list">/* 2 col */</span>
+#single li  {width:15%;} <span class="student-list">/* 1 col </span>
 
+#singlecard .cardContainer  {} <span class="vm-card">/* 1 col </span>
+
+</style>
 ## This project consists of four main clustering nodes
 ### See task list bellow the cards
-
 # At T8G1-Skylab we host, deploy and maintain services used by workers throughout the organization. Our philosophy is:  
-> Can it be written into a feature request - then we can deploy it.
+> Can it be written into a feature request - it can be deployed.
 
-
-<div class="cardContainer">
-    <div class="card">
+<carContainer id="singlecard"> <span class="vm-card"></span>
+    <div class="card"> 
         <h2>VM@Group</h2>
-        <ul>
-            <li>Docker swarm manager</li>
-            <li>Squid proxy container</li>
-            <li>Firewall</li>
-            <li>DHCP server</li>
+        <ul id="double"> <span class="group-list"></span>
+          <li>Docker swarm manager</li>
+          <li>Squid proxy container</li>
+          <li>Firewall</li>
+          <li>DHCP server</li>
         </ul>
         <a href="Group-vm">See more</a>
     </div>
 </div>
-
 <div class="cardContainer">
     <div class="card">
         <h2>VM@Saif</h2>
-        <ul>
-            <li>Docker worker node</li>
-            <li>File server container</li>
+        <ul id="single"> <span class="student-list"></span>
+          <li>Docker worker node</li>
+          <li>File server container</li>
         </ul>
         <a href="Saif-vm">See more</a>
     </div>
     <div class="card">
         <h2>VM@Nikolaj</h2>
-         <ul>
-            <li>Docker svarm manager</li>
-            <li>Logwatch server</li>
+        <ul id="single"> <span class="student-list"></span>
+          <li>Docker svarm manager</li>
+          <li>Logwatch server</li>
         </ul>
         <a href="network-analysis">See more</a>
     </div>
     <div class="card">
         <h2>VM@Emin</h2>
-        <ul>
-            <li>Docker worker node</li>
-            <li>TEXT</li>
+        <ul id="single"> <span class="student-list"></span>
+          <li>Docker worker node</li>
+          <li>TEXT</li>
         </ul>
         <a href="Emin-vm">See more</a>
     </div>

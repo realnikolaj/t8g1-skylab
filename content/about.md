@@ -1,19 +1,13 @@
 ---
 title: About
-prev: future perspectives
-next: about
+prev: Emin-vm
 ---
-
-
-
-Group 6
+Group T8G1
 
 Project Assignment
 
-02467 Computational Social Science Course at DTU, spring 2022 edition.
+62501 Linux Server and Network Course at DTU, spring 2022 edition.
 
 ![](/images/dtu-logo.png)
-
-
 
 <img src="/images/dtu-logo.png" width="200" />

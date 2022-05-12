@@ -91,7 +91,7 @@ network topology and documentation for users and administrators along with the s
    1. [x] Install Docker on Group VM and move squid into docker  
    2. [x] Make it possible that all traffic originating from GroupVM should pass through squid and firewall is 
       adjusted accordingly  
-   3. [ ] Analyze the pros/cons of using proxy for all traffic originating from individual VMs in the group and decide  
+   3. [x] Analyze the pros/cons of using proxy for all traffic originating from individual VMs in the group and decide  
         on it. Document your resons and choice and do the needful depending on the decision  
    4. [ ] Make it possible for all individual members of the group to be able to share documents in a common folder 
       where they will update logs of what change they have made to the Group VM and only the owner of the file is 

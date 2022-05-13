@@ -40,8 +40,9 @@ h2{
 
 
 ## About
-This site presents the internal services and their configurations provided by IT@T8G1-Skylab group, the cluster's 
-network topology and documentation for users and administrators along with the security implemented and how to do a feature request.
+This site presents the internal services and their configurations provided by T8G1-Skylab group, the cluster's 
+network topology and documentation for users and administrators along 
+with the security implemented within the network.
 
 ## Tasks
 ***
@@ -93,7 +94,7 @@ groupVM~~
    Topology](/topology)  
 6. [x] You should setup minimum of two docker container or lxd 
    container on your individual VM [See Host cards in section: 
-   T8G1-Skylab]("/")  
+   T8G1-Skylab](/)  
 7. [ ] ~~[optional] you can configure both docker and LXD and make them work together~~  
 8. [x] Reasonable firewall and other security measures should be implemented and documented for the groupVM and the 
    individual VM  [See Mad docker in section: group-vm](/group-vm) & [Security in section: nikolaj-vm](/nikolaj-vm)
@@ -117,7 +118,7 @@ so that you can get ip from their dhcp) to access other groups local network in 
 This configuration contains four docker worker nodes with two of them 
 assigned the swarm managing role.
 
-<carContainer id="singlecard"> <span class="vm-card"></span>
+<cardContainer id="singlecard"> <span class="vm-card"></span>
     <div class="card"> 
         <h2>VM@Group</h2>
         <ul id="double"> <span class="group-list"></span>
@@ -136,7 +137,7 @@ assigned the swarm managing role.
           <li>Docker worker node</li>
           <li>File server container</li>
         </ul>
-        <a href="Saif-vm">See more</a>
+        <a href="saif-vm">See more</a>
     </div>
     <div class="card">
         <h2>VM@Nikolaj</h2>
@@ -144,7 +145,7 @@ assigned the swarm managing role.
           <li>Docker svarm manager</li>
           <li>Logwatch server</li>
         </ul>
-        <a href="network-analysis">See more</a>
+        <a href="nikolaj-vm">See more</a>
     </div>
     <div class="card">
         <h2>VM@Emin</h2>
@@ -152,7 +153,7 @@ assigned the swarm managing role.
           <li>Docker worker node</li>
           <li>TEXT</li>
         </ul>
-        <a href="Emin-vm">See more</a>
+        <a href="emin-vm">See more</a>
     </div>
 </div>
 

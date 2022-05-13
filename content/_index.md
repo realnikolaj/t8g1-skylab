@@ -134,9 +134,9 @@ assigned the swarm managing role.
         <h2>VM@Saif</h2>
         <ul id="single"> <span class="student-list"></span>
           <li>Docker worker node</li>
-          <li>File server container</li>
+          <li>Jira container</li>
         </ul>
-        <a href="Saif-vm">See more</a>
+        <a href="saif-vm">See more</a>
     </div>
     <div class="card">
         <h2>VM@Nikolaj</h2>

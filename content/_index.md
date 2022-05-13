@@ -127,16 +127,21 @@ groupVM~~
    5. [ ] Any other type of container you think will be relevant
    6. [ ] File server (Seafile, owncloud,nextcloud)  
 4. [ ] Decide where in the topology will you place the various servers. Setting up lxd on GroupVM is not a trivial task 
-   so anything there has to docker but in the documentation you can argue if you would rather used lxd and why?  
-5. [ ] Which virtualization technology between docker and lxd will you use for the particular server and why?  
+   so anything there has to docker but in the documentation you can 
+   argue if you would rather used lxd and why? [See Containers in section: 
+   Topology](/topology)    
+5. [x] Which virtualization technology between docker and lxd will you 
+   use for the particular server and why? [See Containers in section: 
+   Topology](/topology)  
 6. [ ] ~~You should setup minimum of two docker container or lxd 
    container on your individual VM~~  
 7. [ ] ~~[optional] you can configure both docker and LXD and make them work together~~  
 8. [x] Reasonable firewall and other security measures should be implemented and documented for the groupVM and the 
    individual VM  [See Mad docker in section: group-vm](/group-vm) & [Security in section: nikolaj-vm](/nikolaj-vm)
-9. [ ] Setup and discuss the security for each server(container) individually and for the setup as a whole  
-   1. [ ] What do you think the security is for your setup  
-   2. [ ] Talk about strength and vulnerabilities of your infrastructure  
+9. [ ] ~~Setup and discuss the security for each server(container) 
+   individually and for the setup as a whole~~  
+   1. [ ] ~~What do you think the security is for your setup~~  
+   2. [ ] ~~Talk about strength and vulnerabilities of your infrastructure~~  
 10. [ ] ~~Launch attacks like DDOS on other servers, use various tools to check~~
 vulnerabilities in the server setup of other groups  
     1. [ ] ~~You can reconfigure your switch(just add the vlan of the group

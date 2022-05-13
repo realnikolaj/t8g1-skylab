@@ -4,14 +4,68 @@ prev: "/"
 next: saif-vm
 ---
 
-## 1. Installing Docker and moving squid into docker:
+## Group VM
+***
 
-## 2. Pass all traffic from group VM through squid and adjust firewall:
 
-## 3. Pro and cons to using a proxy for all traffic:
+### 1. Installing Docker and moving squid into docker:
+Installing docker on our group vm requires carefull considerations regarding the security measure already implemented. 
+If a 
+rootless docker principle is 
+not established on the docker host, any container running will have root privileges which isn't really an issue for 
+veteran sysadmins that knows have to restrict access to the docker daemon using aswell firewall or custom docker 
+registries to allow only vetted and verified container images to run, but in the hands of non-experienced employee a 
+non-rootless docker client will run any code within any docker image. 
+The second major 
+concern is regarding 
+the iptables chains and rules applied to the group vm acting as the network's firewall. The group vm acts as a router 
+for our 
+internal network and routes network traffic between clients and forwards client trafic to the internet using Network 
+Address so that any packets originating from our clients destined to the internet will have their source headers 
+translated to that if the internet facing router i.e. our group host. Upon starting the docker daemon, the socket 
+responsible for talking to the docker client service and the containers within, new docker specific chains and rules 
+gets
+applied to the iptables with the <code>-I</code> prefix for insertion. This is not a major concern if your aware of 
+this fact, but the <code>FORWARD</code> chain policy gets set to <code>DROP</code> 
+requiring
+manual 
+configuration to any 
+docker host also acting as a router.
+From docker documentation this iptables rule is supplied to help reenable ip forwarding:
+```Shell
+ $ iptables -I DOCKER-USER -i src_if -o dst_if -j ACCEPT
+```
+We've opted to run the docker in root mode for a few reasons:
+1. We're under development and only configurations and log files could contain sensitive information about the 
+   networks' inner workings, parameters that would resemble many other networks thus if there were to be an exploit 
+   in our parameters we would likely be able to mitigate these before production.
+2. Being forced to make the aforementioned critical considerations allows for a good learning environment, producing 
+   a highly skilled, security oriented IT staff.
+3. Docker swarm isn't supported under rootless docker mode.
+
+** Squid container
+Using the default image registry supplied with docker, we pull and run the <code>ubuntu:squid</code> container using 
+this run configuration to enable host network traficking directly to the squid container:
+```Shell
+$ docker run -d --name squid -p  \
+         --volume /etc/squid/squid.conf:/etc/squid/squid.conf \
+         --volume /srv/docker/squid/log:/var/log/squid \
+         --volume /srv/docker/squid/cache:/var/cache/squid \
+         -e TZ=Europe/Copenhagen \
+         ubuntu/squid:latest
+```
+
+### 2. Pass all traffic from group VM through squid and adjust firewall:
+
+### 3. Pro and cons to using a proxy for all traffic:
 
 There are several pros and cons to using a proxy server. Security wise, a proxy server helps with protecfting a clients computer. It works like a relay between the browser and the website, since the browser doesn't directly speak to the website, it has to go through the proxy first. The reason for the proxy to act as a relay is if the website tries something malicious, it will hit the proxy server and not the clients computer. A proxy server can also give a faster browsing experience on the clints most used sites, since a proxy server stores a local cache. Even when managing an office or a school, can a proxy server have its uses. By running all the workers/students browsing through the proxy, an administrator can easily monitor the webtraffic, since all browsing has to go through the proxy. Not only that a proxy server can also use to block specific websites eg. malicious websites, or even social media websites, to keep your employees from entering them.\
 What is then bad about proxy servers? Well not much, but if the provider of the proxy server has malicious intent, it could cause harm for the client. As mentioned earlier, a proxy server keeps a cache for a faster browsing experience and to save bandwidth. THe problem with that is it could also store private information like passwords and other details, which the provider of the proxy server can have or gain access to. For that reason it is important to have trusted provider, or create a proxy server inhouse.
+<code>
+```Shell
+bash cat
+```
+<code>
 
 ```python
 import cv2
@@ -69,8 +123,57 @@ We then setup an nfs server and mount our individual folder
 
 
 
-5.
+5. 
 
-6.
+6. Install a service in docker of your choosing as group which you think will need to share amongst the group, 
+      for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your 
+      group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on ) 
 
-7.
+We've opted to present a static website using Hugo and its official docker container as a service on the docker swarm. 
+The 
+service is created and attached to a 
+custom ingress network which is a an overlay type network exclusive for docker nodes running in swarm mode. The ingress 
+network and any other custom overlay networks are connected to the docker daemons physical network on each 
+individiul node through a virtual bridge <code>docker_gwbridge</code> enabling each node accept trafic destined for 
+the swarm service even when no task is running on the specific node. This relieves 
+the need 
+for for 
+manually 
+creating a subnet or DMZ zone on our dhcp 
+server and negates the need for manipulating the iptables in our firewall, since this is done by the docker service. A 
+docker swarm automatically 
+initializes 
+an overlay network called <code>ingress</code> which we reconfigured using the bellow commands:
+```Bash
+ $ docker network rm ingress
+ $ docker network create \
+    --driver overlay \
+    --ingress \
+    --subnet=10.81.0.0/16 \
+    --gateway=10.81.0.2 \
+    --opt com.docker.network.driver.mtu=1200 \
+    t8g1-ingress
+```
+The ingress network, and any 
+overlay type 
+networks encrypts management trafic between the nodes rotating the AES key every 12 hours. A docker swarm 
+also allows for splitting management and data trafic onto separate network interfaces using the 
+<code>--advertise-addr</code> and <code>--datapath-addr</code> for each node when joining the swarm or at swarm 
+initialization. 
+Overlay networks such as the ingress network and any custom overlay networks acts 
+as a 
+load-balancing proxy for optimizing connections to the services within them, which a: improves loading time for 
+requests to services with replicas i.e. multiple, indentical and independent tasks of a single service 
+distributed in the swarm and b: 
+enables 
+sys-admins to create custom policies for updating services allowing rules to keep a certain amount of tasks running 
+at all times during the update process and thus increasing availability to the service.  
+Only custom overlay networks i.e. networks created without the parameter and option: <code>--mode ingress</code> permits
+setting 
+the 
+attachable flag enabling 
+standalone containers to attach to 
+the network.
+It is recommended to always create separate custom overlay networks for independent services.
+
+7. 

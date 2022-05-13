@@ -119,7 +119,7 @@ groupVM
 5. [ ] Which virtualization technology between docker and lxd will you use for the particular server and why?  
 6. [ ] You should setup minimum of two docker container or lxd container on your individual VM  
 7. [ ] [optional] you can configure both docker and LXD and make them work together  
-8. [ ] Reasonable firewall and other security measures should be implemented and documented for the groupVM and the 
+8. [x] Reasonable firewall and other security measures should be implemented and documented for the groupVM and the 
    individual VM  
 9. [ ] Setup and discuss the security for each server(container) individually and for the setup as a whole  
    1. [ ] What do you think the security is for your setup  

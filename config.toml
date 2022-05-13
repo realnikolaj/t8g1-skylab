@@ -9,6 +9,9 @@ theme = "theme"
     data = "https://doc.opensuse.org"
     github = "https://github.com/realnikolaj/t8g1-skylab"
     [[params.nav]]
+        label = "Home"
+        link = "/"
+    [[params.nav]]
         label = "Group vm"
         link = "/group-vm"
     [[params.nav]]

@@ -3,6 +3,18 @@ title: VM@Nikolaj
 prev: saif-vm
 next: emin-vm
 ---
+## Containers
+Apart from being the leading node and one of the two managers 
+responsible for creating the custom overlay networks this host also 
+participates in running one replica of the Hugo webservice distributed 
+on the t8g1-ingress network.
+One standalone container running in host mode supplies a local 
+registry which purpose is to ensure 
+a higher level of network integrity by allowing only a subset of 
+container images to be deployed throughout all docker nodes. This 
+measure is highly relevant for docker clusters running in swarm mode 
+where rootless docker is not supported [See rootless docker in section: 
+Group-vm](/group-vm)  
 
 ## Security
 Our reasonably hardened firewall doesn't cover mitm attacks such as 

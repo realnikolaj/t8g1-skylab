@@ -1,5 +1,5 @@
 ---
-title: IT@T8G1-Skylab
+title: T8G1-Skylab
 layout: single
 next: group-vm
 ---
@@ -43,6 +43,7 @@ h2{
 This site presents the internal services and their configurations provided by T8G1-Skylab group, the cluster's 
 network topology and documentation for users and administrators along 
 with the security implemented within the network.
+[See the public repository for this site here]
 
 ## Tasks
 ***
@@ -142,8 +143,9 @@ assigned the swarm managing role.
     <div class="card">
         <h2>VM@Nikolaj</h2>
         <ul id="single"> <span class="student-list"></span>
-          <li>Docker svarm manager</li>
-          <li>Logwatch server</li>
+          <li>Docker swarm manager</li>
+          <li>Hugo service replica</li>
+          <li>Image registry container</li>
         </ul>
         <a href="nikolaj-vm">See more</a>
     </div>

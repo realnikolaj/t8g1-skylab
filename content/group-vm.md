@@ -6,8 +6,7 @@ next: topology
 
 # Group VM
 ***
-## Squid
-### 1. Installing Docker and moving squid into docker:
+## Rootless docker
 Installing docker on our group vm requires carefull considerations regarding the security measure already implemented. 
 If a 
 rootless docker principle is 
@@ -42,7 +41,8 @@ We've opted to run the docker in root mode for a few reasons:
    a highly skilled, security oriented IT staff.
 3. Docker swarm isn't supported under rootless docker mode.
 
-** Squid container
+## Squid
+### 1. Installing Docker and moving squid into docker:
 Using the default image registry supplied with docker, we pull and run the <code>ubuntu:squid</code> container using 
 this run configuration to enable host network traficking directly to the squid container:
 ```Sh

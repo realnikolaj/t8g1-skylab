@@ -10,9 +10,19 @@ next: about
 ***
 
 ### 3. Topology
-bla bla
-***
 
+<img src="/images/Networkdiagram.png" width="800" />
+
+We have now designed a sketch of our network topology, which can be seen in the picture above. 
+ In the diagram we show that we are hosting HUGO webserver in a docker 
+ container through subnet 10.81. We also used t8g1-ingress overlay network 
+ which has the benefits of automatically creating a subnet that of which,
+ by 
+ our individual VM's strict firewall rules [See Security in section: nikolaj-vm](/nikolaj-vm), is isolated from the 
+ network and per docker's generous trafic acceptance strategy as in: 
+ accepting 
+ anything and everything from anywhere to everywhere, effectively becomes 
+ a DMZ zone.
 ### 4.
 
 ***

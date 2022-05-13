@@ -10,12 +10,12 @@ next: about
 ***
 
 ### 3. Topology
-<img src="/images/NetworkTopology.png" width="800" />
+<img src="/images/Networkdiagram.png" width="800" />
 
-
-### 4.
 We have now designed a sketch of our network topology, which can be seen in the picture above. 
 In the diagram we show that we are hosting HUGO webserver in a docker container through subnet 10.81. We also used Ineress network which has the benefits of not creating a subnet manually or a DMZ zone
+
+### 4.
 
 
 ***

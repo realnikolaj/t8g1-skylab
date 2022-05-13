@@ -118,19 +118,19 @@ requiring
 manual
 configuration to any
 docker host also acting as a router.
-From docker documentation this iptables rule is supplied to help reenable ip forwarding:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Shell data-lang=Shell> $ iptables -I DOCKER-USER -i src_if -o dst_if -j ACCEPT
+From docker documentation this iptables rule is supplied to help reenable ip forwarding:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh> $ iptables -I DOCKER-USER -i src_if -o dst_if -j ACCEPT
 </code></pre></div><p>We&rsquo;ve opted to run the docker in root mode for a few reasons:</p><ol><li>We&rsquo;re under development and only configurations and log files could contain sensitive information about the
 networks' inner workings, parameters that would resemble many other networks thus if there were to be an exploit
 in our parameters we would likely be able to mitigate these before production.</li><li>Being forced to make the aforementioned critical considerations allows for a good learning environment, producing
 a highly skilled, security oriented IT staff.</li><li>Docker swarm isn&rsquo;t supported under rootless docker mode.</li></ol><p>** Squid container
 Using the default image registry supplied with docker, we pull and run the <code>ubuntu:squid</code> container using
-this run configuration to enable host network traficking directly to the squid container:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Shell data-lang=Shell>$ docker run -d --name squid -p  <span style=color:#ae81ff>\
+this run configuration to enable host network traficking directly to the squid container:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh>$ docker run -d --name squid -p  <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>         --volume /etc/squid/squid.conf:/etc/squid/squid.conf <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>         --volume /srv/docker/squid/log:/var/log/squid <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>         --volume /srv/docker/squid/cache:/var/cache/squid <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>         -e TZ<span style=color:#f92672>=</span>Europe/Copenhagen <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>         ubuntu/squid:latest
-</code></pre></div><p><a name=id-1a></a></p><hr><h3 id=2-pass-all-traffic-from-group-vm-through-squid-and-adjust-firewall>2. Pass all traffic from group VM through squid and adjust firewall:</h3><p><a name=id-1b></a></p><hr><h3 id=3-pro-and-cons-to-using-a-proxy-for-all-traffic>3. Pro and cons to using a proxy for all traffic:</h3><p>There are several pros and cons to using a proxy server. Security wise, a proxy server helps with protecfting a clients computer. It works like a relay between the browser and the website, since the browser doesn&rsquo;t directly speak to the website, it has to go through the proxy first. The reason for the proxy to act as a relay is if the website tries something malicious, it will hit the proxy server and not the clients computer. A proxy server can also give a faster browsing experience on the clints most used sites, since a proxy server stores a local cache. Even when managing an office or a school, can a proxy server have its uses. By running all the workers/students browsing through the proxy, an administrator can easily monitor the webtraffic, since all browsing has to go through the proxy. Not only that a proxy server can also use to block specific websites eg. malicious websites, or even social media websites, to keep your employees from entering them.<br>What is then bad about proxy servers? Well not much, but if the provider of the proxy server has malicious intent, it could cause harm for the client. As mentioned earlier, a proxy server keeps a cache for a faster browsing experience and to save bandwidth. The problem with that is it could also store private information like passwords and other details, which the provider of the proxy server can have or gain access to. For that reason it is important to have trusted provider, or create a proxy server inhouse.</p><p><a name=id-1c></a></p><hr><h3 id=4-have-a-common-folder-for-the-group-to-share-files-and-logs>4. Have a common folder for the group to share files and logs</h3><p>Firstly we create a folder for every individual on our group vm /usr/local/share with this kind of folder structure:</p><pre><code>/usr/local/share
+</code></pre></div><p><a name=id-1a></a></p><hr><h3 id=2-pass-all-traffic-from-group-vm-through-squid-and-adjust-firewall>2. Pass all traffic from group VM through squid and adjust firewall:</h3><p><a name=id-1b></a></p><hr><h3 id=3-pro-and-cons-to-using-a-proxy-for-all-traffic>3. Pro and cons to using a proxy for all traffic:</h3><p>There are several pros and cons to using a proxy server. Security wise, a proxy server helps with protecfting a clients computer. It works like a relay between the browser and the website, since the browser doesn&rsquo;t directly speak to the website, it has to go through the proxy first. The reason for the proxy to act as a relay is if the website tries something malicious, it will hit the proxy server and not the clients computer. A proxy server can also give a faster browsing experience on the clints most used sites, since a proxy server stores a local cache. Even when managing an office or a school, can a proxy server have its uses. By running all the workers/students browsing through the proxy, an administrator can easily monitor the webtraffic, since all browsing has to go through the proxy. Not only that a proxy server can also use to block specific websites eg. malicious websites, or even social media websites, to keep your employees from entering them.<br>What is then bad about proxy servers? Well not much, but if the provider of the proxy server has malicious intent, it could cause harm for the client. As mentioned earlier, a proxy server keeps a cache for a faster browsing experience and to save bandwidth. THe problem with that is it could also store private information like passwords and other details, which the provider of the proxy server can have or gain access to. For that reason it is important to have trusted provider, or create a proxy server inhouse.</p><p><a name=id-1c></a></p><hr><h3 id=4-have-a-common-folder-for-the-group-to-share-files-and-logs>4. Have a common folder for the group to share files and logs</h3><p>Firstly we create a folder for every individual on our group vm /usr/local/share with this kind of folder structure:</p><pre><code>/usr/local/share
 └─── nik
 │    │   files
 │    │   etc...
@@ -178,7 +178,7 @@ creating a subnet or DMZ zone on our dhcp
 server and negates the need for manipulating the iptables in our firewall, since this is done by the docker service. A
 docker swarm automatically
 initializes
-an overlay network called <code>ingress</code> which we reconfigured using the bellow commands:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Bash data-lang=Bash> $ docker network rm ingress
+an overlay network called <code>ingress</code> which we reconfigured using the bellow commands:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh> $ docker network rm ingress
  $ docker network create <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>    --driver overlay <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>    --ingress <span style=color:#ae81ff>\
@@ -205,6 +205,70 @@ the
 attachable flag enabling
 standalone containers to attach to
 the network.
-It is recommended to always create separate custom overlay networks for independent services.</p><ol start=7><li></li></ol><hr class="border-b-2 border-gray-400 mt-8 mx-4"><div class="font-sans flex justify-between content-center px-4 pb-12"><div class=text-left><p><a href=https://realnikolaj.github.io/t8g1-skylab/ class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">&lt;
+It is recommended to always create separate custom overlay networks for independent services.</p><ol start=7><li></li></ol><h2 id=reasonable-firewall-and-other-security-measures-should-be-implemented-and-documented-for-the-groupvm>Reasonable firewall and other security measures should be implemented and documented for the groupVM</h2><p>As mentioned simple firewall rules gets cluttered by the docker clients running on each node. Extensive measure must
+be taken to secure the network and especially the containers running withing it.
+As a deafult docker will open any published ports from services and standalone containers to the external network,
+and running these services and containers in a non-rootless docker environment which is dictated by the docker
+engine when running docker in swarm mode, exposes the integrety of the entire network. Luckyli the official
+documentation for docker is an endless source of consideration and warnings regarding the &ldquo;feature&rdquo; and supplies
+several recommendations for securing the environment.
+Docker creates new iptables chains per default and drops all forwarding on the host, which is an issue for the group
+vm which also acts as a router. The following command reenables forwarding on the group vm:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh>$ iptables -I DOCKER-USER -i src_if -o dst_if -j ACCEPT
+</code></pre></div><p>When starting a service or a container created with the flags <code>&ndash;publish [host_port]:[container_port]</code>
+docker will
+insert
+rules in the
+DOCKER chain opening the specified host port on the interface upon which docker binds which is <code>0.0.0.0</code>
+by default. This means that docker will listen for any incomming requests on those ports from any interface on the
+host!
+A simply but not commonly known fix is to specifiy the entire host and port on which to listen for requests:
+<code>&ndash;publish 192.168.165.1:3128:3128</code>.
+At first having such a significant setting enabled by default seems malignant, but it actually offers a very
+opportune scenario where we can restrict access to the network pre-docker, blocking any and all
+trafic not originating
+from within the network, and let docker and running containers or services dictate which ports to open.
+We consider this way of configuring the firewall optimal given the requirements posed upon our network by
+docker.
+The following table implemented on our group vm drops all trafic except ssh trafic to the network, outgoing connections
+from withing the internal LAN and then uses the DOCKER_USER chain to insert custom rulesets that will do the very
+same thing only this chain superceeds the DOCKER chain that initializes once the docker service is running, this
+incremental configuration is remniscent of common UNIX package and services behavior where administrator are
+instructed or discouraged from altering the default configuration files and instead use custom user configuration
+which the package software will se as overruling to any default settings and also like how shell profile scripts
+exists at various levels for contemplating structured and context aware behavior such as simply providing defaults
+to multiple users and allowing users to overrule the defaults.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh><span style=color:#75715e>#!/bin/bash
+</span><span style=color:#75715e></span>INET_IF<span style=color:#f92672>=</span>eth0
+IPTABLES<span style=color:#f92672>=</span>/usr/sbin/iptables
+
+<span style=color:#75715e>#This will purge the firewall rules</span>
+$IPTABLES -F
+$IPTABLES -t nat -F
+$IPTABLES -X
+
+<span style=color:#75715e>#A new chain &#34;block&#34; is used and will new connection from within and accept only already established by LAN connections</span>
+<span style=color:#75715e>#Incoming tcp trafic is accepted to the default ssh port 22</span>
+<span style=color:#75715e>#Anything else gets droped ... but only until starting a docker container/service that listens on a port</span>
+$IPTABLES -N block
+$IPTABLES -A block -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A block -m conntrack --ctstate NEW ! -i  $INET_IF -j ACCEPT
+$IPTABLES -A block -p tcp --dport ssh -j ACCEPT
+$IPTABLES -A block -j DROP
+
+<span style=color:#75715e>#These chains gets redirected to the block chain, they&#39;re needed for actually providing the block chain with trafic</span>
+$IPTABLES -A INPUT -j block
+$IPTABLES -A FORWARD -j block
+
+<span style=color:#75715e>#Here we use the &#34;-I&#34; option to skip or circumvent any docker created rules and go straight to the block chain</span>
+<span style=color:#75715e>#This rule also works for reenabling FORWARDING on hosts running docker that also must suply routing capabilities </span>
+<span style=color:#75715e>#for our network</span>
+$IPTABLES -I DOCKER_USER -j block
+
+<span style=color:#75715e>#If external access is actually needed or if connection tracking isn&#39;t wanted from DOCKER originating packets</span>
+<span style=color:#75715e>#those rules must be prepended aswell to apply before the redirect rule above.</span>
+<span style=color:#75715e>#EXAMPLE: #iptables -I DOCKER-USER -i $src_if -o $dst_if -j ACCEPT</span>
+
+<span style=color:#75715e>#Masquerade</span>
+$IPTABLES -t nat -A POSTROUTING -o $INET_IF -j MASQUERADE
+</code></pre></div><hr class="border-b-2 border-gray-400 mt-8 mx-4"><div class="font-sans flex justify-between content-center px-4 pb-12"><div class=text-left><p><a href=https://realnikolaj.github.io/t8g1-skylab/ class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">&lt;
 Previous Page</a></p></div><div class=text-right><p><a href=../saif-vm class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">Next
 Page ></a></p></div></div></div></div><footer class="bg-white border-t border-gray-400 shadow"><div class="container max-w-4xl mx-auto flex py-8"><div class="w-full mx-auto flex flex-col"><div class="flex w-full"><div class="px-8 mx-auto"><ul class="pt-3 list-none px-0 flex"><li><a class="text-gray-600 no-underline py-2" href=../explainer-notebook.html><i data-feather=file-text class=footer-icon></i></a></li><li><a class="text-gray-600 no-underline py-2" href=https://github.com/realnikolaj/t8g1-skylab><i data-feather=github class=footer-icon></i></a></li><li><a class="text-gray-600 no-underline py-2" href=https://doc.opensuse.org><i data-feather=hard-drive class=footer-icon></i></a></li></ul></div></div><div class="w-full mx-auto text-center"><ul class="list-reset items-center text-md py-6 list-none flex"><li class=mx-auto><p class="inline-block text-gray-600 mx-4 font-semibold capitalized">Nikolaj S. Povlsen, Saif Ali, Emin Olcer</p></li></ul></div></div></div></footer><script>var h=document.documentElement,b=document.body,st='scrollTop',sh='scrollHeight',progress=document.querySelector('#progress'),scrollpos=window.scrollY,header=document.getElementById("header"),navcontent=document.getElementById("nav-content"),scroll;document.addEventListener('scroll',function(){scroll=(h[st]||b[st])/((h[sh]||b[sh])-h.clientHeight)*100,progress.style.setProperty('--scroll',scroll+'%'),scrollpos=window.scrollY,scrollpos>10?(header.classList.add("bg-white"),header.classList.add("shadow"),navcontent.classList.remove("bg-gray-100"),navcontent.classList.add("bg-white")):(header.classList.remove("bg-white"),header.classList.remove("shadow"),navcontent.classList.remove("bg-white"),navcontent.classList.add("bg-gray-100"))}),document.getElementById('nav-toggle').onclick=function(){document.getElementById("nav-content").classList.toggle("hidden")},feather.replace()</script></body></html>

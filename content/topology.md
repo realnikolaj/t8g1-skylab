@@ -10,7 +10,8 @@ next: about
 ***
 
 ### 3. Topology
-<img src="/images/NetworkTopology.png" width="200" />
+<img src="/images/NetworkTopology.png" width="800" />
+
 
 ### 4.
 We have now designed a sketch of our network topology, which can be seen in the picture above. 

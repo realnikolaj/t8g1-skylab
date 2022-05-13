@@ -136,7 +136,7 @@ assigned the swarm managing role.
         <h2>VM@Saif</h2>
         <ul id="single"> <span class="student-list"></span>
           <li>Docker worker node</li>
-          <li>File server container</li>
+          <li>Jira container</li>
         </ul>
         <a href="saif-vm">See more</a>
     </div>
@@ -153,7 +153,7 @@ assigned the swarm managing role.
         <h2>VM@Emin</h2>
         <ul id="single"> <span class="student-list"></span>
           <li>Docker worker node</li>
-          <li>TEXT</li>
+          <li>Unbound DNS container</li>
         </ul>
         <a href="emin-vm">See more</a>
     </div>

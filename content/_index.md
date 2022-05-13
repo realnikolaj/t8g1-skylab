@@ -119,12 +119,12 @@ so that you can get ip from their dhcp) to access other groups local network in 
 This configuration contains four docker worker nodes with two of them 
 assigned the swarm managing role.
 
-<cardContainer id="singlecard"> <span class="vm-card"></span>
+<carContainer id="singlecard"> <span class="vm-card"></span>
     <div class="card"> 
         <h2>VM@Group</h2>
         <ul id="double"> <span class="group-list"></span>
           <li>Docker swarm manager</li>
-          <li>Squid proxy container</li>
+          <li>Squid proxy</li>
           <li>Firewall</li>
           <li>DHCP server</li>
         </ul>
@@ -135,7 +135,7 @@ assigned the swarm managing role.
     <div class="card">
         <h2>VM@Saif</h2>
         <ul id="single"> <span class="student-list"></span>
-          <li>Docker worker node</li>
+          <li>Docker worker</li>
           <li>Jira container</li>
         </ul>
         <a href="saif-vm">See more</a>
@@ -144,16 +144,16 @@ assigned the swarm managing role.
         <h2>VM@Nikolaj</h2>
         <ul id="single"> <span class="student-list"></span>
           <li>Docker swarm manager</li>
-          <li>Hugo service replica</li>
-          <li>Image registry container</li>
+          <li>Hugo replica</li>
+          <li>Image registry</li>
         </ul>
         <a href="nikolaj-vm">See more</a>
     </div>
     <div class="card">
         <h2>VM@Emin</h2>
         <ul id="single"> <span class="student-list"></span>
-          <li>Docker worker node</li>
-          <li>Unbound DNS container</li>
+          <li>Docker worker </li>
+          <li>Unbound DNS</li>
         </ul>
         <a href="emin-vm">See more</a>
     </div>

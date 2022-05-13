@@ -177,3 +177,78 @@ the network.
 It is recommended to always create separate custom overlay networks for independent services.
 
 7. 
+
+## Reasonable firewall and other security measures should be implemented and documented for the groupVM
+As mentioned simple firewall rules gets cluttered by the docker clients running on each node. Extensive measure must 
+be taken to secure the network and especially the containers running withing it.
+As a deafult docker will open any published ports from services and standalone containers to the external network, 
+and running these services and containers in a non-rootless docker environment which is dictated by the docker 
+engine when running docker in swarm mode, exposes the integrety of the entire network. Luckyli the official 
+documentation for docker is an endless source of consideration and warnings regarding the "feature" and supplies 
+several recommendations for securing the environment.
+Docker creates new iptables chains per default and drops all forwarding on the host, which is an issue for the group 
+vm which also acts as a router. The following command reenables forwarding on the group vm:
+```Bash
+$ iptables -I DOCKER-USER -i src_if -o dst_if -j ACCEPT
+```
+When starting a service or a container created with the flags <code>--publish [host_port]:[container_port]</code> 
+docker will 
+insert 
+rules in the 
+DOCKER chain opening the specified host port on the interface upon which docker binds which is <code>0.0.0.0</code> 
+by default. This means that docker will listen for any incomming requests on those ports from any interface on the 
+host!
+A simply but not commonly known fix is to specifiy the entire host and port on which to listen for requests: 
+<code>--publish 192.168.165.1:80:3128</code>.
+At first having such a significant setting enabled by default seems malignant, but it actually offers a very 
+opportune scenario where we can restrict access to the network pre-docker, blocking any and all 
+trafic not originating 
+from within the network, and let docker and running containers or services dictate which ports to open. 
+We consider this way of configuring the firewall optimal given the requirements posed upon our network by 
+docker.
+The following table implemented on our group vm drops all trafic except ssh trafic to the network, outgoing connections 
+from withing the internal LAN and then uses the DOCKER_USER chain to insert custom rulesets that will do the very 
+same thing only this chain superceeds the DOCKER chain that initializes once the docker service is running, this 
+incremental configuration is remniscent of common UNIX package and services behavior where administrator are 
+instructed or discouraged from altering the default configuration files and instead use custom user configuration 
+which the package software will se as overruling to any default settings and also like how shell profile scripts 
+exists at various levels for contemplating structured and context aware behavior such as simply providing defaults 
+to multiple users and allowing users to overrule the defaults. 
+
+```Bash
+#!/bin/bash
+#
+INET_IF=eth0
+IPTABLES=/usr/sbin/iptables
+
+#This will purge the firewall rules
+$IPTABLES -F
+$IPTABLES -t nat -F
+$IPTABLES -X
+
+#A new chain "block" is used and will new connection from within and accept only already established by LAN connections
+#Incoming tcp trafic is accepted to the default ssh port 22
+#Anything else gets droped ... but only until starting a docker container/service that listens on a port
+$IPTABLES -N block
+$IPTABLES -A block -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A block -m conntrack --ctstate NEW ! -i  $INET_IF -j ACCEPT
+$IPTABLES -A block -p tcp --dport ssh -j ACCEPT
+$IPTABLES -A block -j DROP
+
+#These chains gets redirected to the block chain, they're needed for actually providing the block chain with trafic
+$IPTABLES -A INPUT -j block
+$IPTABLES -A FORWARD -j block
+
+#Here we use the "-I" option to skip or circumvent any docker created rules and go straight to the block chain
+#This rule also works for reenabling FORWARDING on hosts running docker that also must suply routing capabilities 
+for our network
+$IPTABLES -I DOCKER_USER -j block
+
+#If external access is actually needed or if connection tracking isn't wanted from DOCKER originating packets
+#those rules must be prepended aswell to apply before the redirect rule above.
+#EXAMPLE: #iptables -I DOCKER-USER -i $src_if -o $dst_if -j ACCEPT
+
+#Masquerade
+$IPTABLES -t nat -A POSTROUTING -o $INET_IF -j MASQUERADE
+```
+requirements 

@@ -4,11 +4,9 @@ prev: "/"
 next: topology
 ---
 
-## Group VM
-
-<a name="id-1"></a>
+# Group VM
 ***
-
+## Squid
 ### 1. Installing Docker and moving squid into docker:
 Installing docker on our group vm requires carefull considerations regarding the security measure already implemented. 
 If a 
@@ -55,13 +53,42 @@ $ docker run -d --name squid -p  \
          -e TZ=Europe/Copenhagen \
          ubuntu/squid:latest
 ```
-<a name="id-1a"></a> 
+
 ***
+## Proxy
 ### 2. Pass all traffic from group VM through squid and adjust firewall:
 
-<a name="id-1b"></a> 
-***
+Below configuration implements policy routing for separate gateway and 
+squid hosts
 
+```Sh
+# IPv4 address of proxy
+PROXYIP4= 192.168.0.10
+
+# IPv6 address of proxy
+PROXYIP6= fe80:dead:beef::10
+
+# interface facing clients
+CLIENTIFACE= eth0
+
+# arbitrary mark used to route packets by the firewall. May be anything from 1 to 64.
+FWMARK= 2
+
+
+# permit Squid box out to the Internet
+iptables -t mangle -A PREROUTING -p tcp --dport 80 -s $PROXYIP4 -j ACCEPT
+ip6tables -t mangle -A PREROUTING -p tcp --dport 80 -s $PROXYIP6 -j ACCEPT
+
+# mark everything else on port 80 to be routed to the Squid box
+iptables -t mangle -A PREROUTING -i $CLIENTIFACE -p tcp --dport 80 -j MARK --set-mark $FWMARK
+iptables -t mangle -A PREROUTING -m mark --mark $FWMARK -j ACCEPT
+ip6tables -t mangle -A PREROUTING -i $CLIENTIFACE -p tcp --dport 80 -j MARK --set-mark $FWMARK
+ip6tables -t mangle -A PREROUTING -m mark --mark $FWMARK -j ACCEPT
+
+# NP: Ensure that traffic from inside the network is allowed to loop back inside again.
+iptables -t filter -A FORWARD -i $CLIENTIFACE -o $CLIENTIFACE -p tcp --dport 80 -j ACCEPT
+ip6tables -t filter -A FORWARD -i $CLIENTIFACE -o $CLIENTIFACE -p tcp --dport 80 -j ACCEPT
+```
 ### 3. Pro and cons to using a proxy for all traffic:
 
 There are several pros and cons to using a proxy server. Security wise, a proxy server helps with protecfting a clients computer. It works like a relay between the browser and the website, since the browser doesn't directly speak to the website, it has to go through the proxy first. The reason for the proxy to act as a relay is if the website tries something malicious, it will hit the proxy server and not the clients computer. A proxy server can also give a faster browsing experience on the clints most used sites, since a proxy server stores a local cache. Even when managing an office or a school, can a proxy server have its uses. By running all the workers/students browsing through the proxy, an administrator can easily monitor the webtraffic, since all browsing has to go through the proxy. Not only that a proxy server can also use to block specific websites eg. malicious websites, or even social media websites, to keep your employees from entering them.\
@@ -138,9 +165,9 @@ $ sudo mount -t nfs 192.168.165.1:/usr/local/share/(shared_or_emin...) /the_dire
 We can now through our own machine access our directories and the shared directory
 
 
-5. 
-
-6. Install a service in docker of your choosing as group which you think will need to share amongst the group, 
+## Custom ingress
+### 6. Install a service in docker of your choosing as group which you 
+think will need to share amongst the group, 
       for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your 
       group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on ) 
 
@@ -191,9 +218,9 @@ standalone containers to attach to
 the network.
 It is recommended to always create separate custom overlay networks for independent services.
 
-7. 
+## Mad docker
+### 7. Update the firewall to allow limited traffic from DMZ only to be able to use that service 
 
-## Reasonable firewall and other security measures should be implemented and documented for the groupVM
 As mentioned simple firewall rules gets cluttered by the docker clients running on each node. Extensive measure must 
 be taken to secure the network and especially the containers running withing it.
 As a deafult docker will open any published ports from services and standalone containers to the external network, 

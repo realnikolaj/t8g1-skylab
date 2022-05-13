@@ -88,25 +88,36 @@ network topology and documentation for users and administrators along with the s
 ### Tasks
 
 1. On group VM:
-   1. [x] Install Docker on Group VM and move squid into docker  [See page #1: Group-vm](/group-vm#id-1)   
+   1. [x] Install Docker on Group VM and move squid into docker  
+      [See Docker in section: Group-vm](/group-vm)   
    2. [x] Make it possible that all traffic originating from GroupVM should pass through squid and firewall is 
-      adjusted accordingly  [See page #1: Group-vm](/group-vm)  
-   3. [x] Analyze the pros/cons of using proxy for all traffic originating from individual VMs in the group and decide on it. Document your resons and choice and do the needful depending on the decision. [See page #2: Group-vm](/group-vm#id-1b)
+      adjusted accordingly  [See Squid in section: Group-vm](/group-vm)  
+   3. [x] Analyze the pros/cons of using proxy for all traffic 
+      originating from individual VMs in the group and decide on it. 
+      Document your resons and choice and do the needful depending on 
+      the decision. [See Proxy in section: Group-vm](/group-vm)
    4. [x] Make it possible for all individual members of the group to be able to share documents in a common folder 
       where they will update logs of what change they have made to the Group VM and only the owner of the file is 
-      able to modify/delete the file. Rest should be able to read all information in the file. So, each member should have his own file[See page #2: Group-vm](/group-vm#id-1c)
-   5. [ ] [optional] place log files in a container separate container. How does it affect security  
-   6. [-] Install a service in docker of your choosing as group which you think will need to share amongst the group, 
+      able to modify/delete the file. Rest should be able to read all 
+      information in the file. So, each member should have his own file
+      [See NFS in section: #2: Group-vm](/group-vm)
+   5. [ ] ~~[optional] place log files in a container separate container. How does it affect security~~  
+   6. [x] Install a service in docker of your choosing as group which 
+      you think will need to share amongst the group, 
       for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your 
-      group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on )  [See page #1: Group-vm](group-vm)  
-   7. [x] Update the firewall to allow limited traffic from DMZ only to be able to use that service  [See page #1: Group-vm](group-vm)
+      group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 
+      and so on )  [See Custom ingress in section: Group-vm](/group-vm)  
+   7. [x] Update the firewall to allow limited traffic from DMZ only to 
+      be able to use that service  [See Mad docker in section: 
+      Group-vm](/group-vm)
 2. In your individual VM
     1. [x] Setup & Configure the LXD or docker  
-    2. [ ] [optional] get ip address for LXD or Docker from dhcp server on
-groupVM  
-    3. [ ] Setup security for your individual server and the containers you will run  
+    2. [ ] ~~[optional] get ip address for LXD or Docker from dhcp server on
+groupVM~~
+    3. [x] Setup security for your individual server and the containers 
+       you will run [See Security in section: nikolaj-vm](/nikolaj-vm)
     4. [x] Discuss the security and other networking considerations for keeping containers isolated from local 
-       network and making them available over the local network  
+       network and making them available over the local network [See Security in section: nikolaj-vm](/nikolaj-vm)
 3. Design a network topology (not configure) for the whole group  
    1. [ ] Database server (mysql, mongo,postgres)  
    2. [ ] Webserver (nginx,apache, caddy)  
@@ -117,20 +128,21 @@ groupVM
 4. [ ] Decide where in the topology will you place the various servers. Setting up lxd on GroupVM is not a trivial task 
    so anything there has to docker but in the documentation you can argue if you would rather used lxd and why?  
 5. [ ] Which virtualization technology between docker and lxd will you use for the particular server and why?  
-6. [ ] You should setup minimum of two docker container or lxd container on your individual VM  
-7. [ ] [optional] you can configure both docker and LXD and make them work together  
+6. [ ] ~~You should setup minimum of two docker container or lxd 
+   container on your individual VM~~  
+7. [ ] ~~[optional] you can configure both docker and LXD and make them work together~~  
 8. [x] Reasonable firewall and other security measures should be implemented and documented for the groupVM and the 
-   individual VM  
+   individual VM  [See Mad docker in section: group-vm](/group-vm) & [Security in section: nikolaj-vm](/nikolaj-vm)
 9. [ ] Setup and discuss the security for each server(container) individually and for the setup as a whole  
    1. [ ] What do you think the security is for your setup  
    2. [ ] Talk about strength and vulnerabilities of your infrastructure  
-10. [ ] Launch attacks like DDOS on other servers, use various tools to check
+10. [ ] ~~Launch attacks like DDOS on other servers, use various tools to check~~
 vulnerabilities in the server setup of other groups  
-    1. [ ] You can reconfigure your switch(just add the vlan of the group
-so that you can get ip from their dhcp) to access other groups local network in the class  
-    2. [ ] Then you can run these vulnerability scanners like nmap and nikto to find out more about their network, 
-       services etc.  
-    3. [ ] Document your findings, vulnerabilities and suggest way to protect/attack the vulnerabilities  
+    1. [ ] ~~You can reconfigure your switch(just add the vlan of the group
+so that you can get ip from their dhcp) to access other groups local network in the class~~  
+    2. [ ] ~~Then you can run these vulnerability scanners like nmap and nikto to find out more about their network, 
+       services etc.~~  
+    3. [ ] ~~Document your findings, vulnerabilities and suggest way to protect/attack the vulnerabilities~~  
 
 62501 Linux Server and Network Course at DTU, spring 2022 edition.
 

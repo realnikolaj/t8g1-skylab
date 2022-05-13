@@ -99,8 +99,8 @@ groupVM~~
 7. [ ] ~~[optional] you can configure both docker and LXD and make them work together~~  
 8. [x] Reasonable firewall and other security measures should be implemented and documented for the groupVM and the 
    individual VM  [See Mad docker in section: group-vm](/group-vm) & [Security in section: nikolaj-vm](/nikolaj-vm)
-9. [ ] ~~Setup and discuss the security for each server(container) 
-   individually and for the setup as a whole~~  
+9. [x] Setup and discuss the security for each server(container) 
+   individually and for the setup as a whole [See Mad docker in section: group-vm](/group-vm) & [Security in section: nikolaj-vm](/nikolaj-vm)  
    1. [ ] ~~What do you think the security is for your setup~~  
    2. [ ] ~~Talk about strength and vulnerabilities of your infrastructure~~  
 10. [ ] ~~Launch attacks like DDOS on other servers, use various tools to check~~

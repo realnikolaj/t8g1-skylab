@@ -267,26 +267,33 @@ $IPTABLES -F
 $IPTABLES -t nat -F
 $IPTABLES -X
 
-#A new chain "block" is used and will new connection from within and accept only already established by LAN connections
+#A new chain "block" is used and will new connection from within and 
+# accept only already established by LAN connections
 #Incoming tcp trafic is accepted to the default ssh port 22
-#Anything else gets droped ... but only until starting a docker container/service that listens on a port
+#Anything else gets droped ... but only until starting a docker
+# container/service that listens on a port
 $IPTABLES -N block
 $IPTABLES -A block -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 $IPTABLES -A block -m conntrack --ctstate NEW ! -i  $INET_IF -j ACCEPT
 $IPTABLES -A block -p tcp --dport ssh -j ACCEPT
 $IPTABLES -A block -j DROP
 
-#These chains gets redirected to the block chain, they're needed for actually providing the block chain with trafic
+#These chains gets redirected to the block chain, they're needed for
+# actually providing the block chain with trafic
 $IPTABLES -A INPUT -j block
 $IPTABLES -A FORWARD -j block
 
-#Here we use the "-I" option to skip or circumvent any docker created rules and go straight to the block chain
-#This rule also works for reenabling FORWARDING on hosts running docker that also must suply routing capabilities 
+#Here we use the "-I" option to skip or circumvent any docker created
+# rules and go straight to the block chain
+#This rule also works for reenabling FORWARDING on hosts running docker
+# that also must suply routing capabilities 
 #for our network
 $IPTABLES -I DOCKER_USER -j block
 
-#If external access is actually needed or if connection tracking isn't wanted from DOCKER originating packets
-#those rules must be prepended aswell to apply before the redirect rule above.
+#If external access is actually needed or if connection tracking isn't 
+# wanted from DOCKER originating packets
+#those rules must be prepended aswell to apply before the redirect rule
+# above.
 #EXAMPLE: #iptables -I DOCKER-USER -i $src_if -o $dst_if -j ACCEPT
 
 #Masquerade

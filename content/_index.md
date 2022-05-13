@@ -85,7 +85,8 @@ h2{
 This site presents the internal services and their configurations provided by IT@T8G1-Skylab group, the cluster's 
 network topology and documentation for users and administrators along with the security implemented and how to do a feature request.
 
-### Tasks
+## Tasks
+***
 
 1. On group VM:
    1. [x] Install Docker on Group VM and move squid into docker  

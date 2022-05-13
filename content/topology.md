@@ -5,8 +5,6 @@ next: about
 ---
 
 ## Topology
-
-<a name="id-3"></a>
 ***
 
 ### 3. Topology
@@ -14,9 +12,12 @@ next: about
 
 ### 4.
 We have now designed a sketch of our network topology, which can be seen in the picture above. 
-In the diagram we show that we are hosting HUGO webserver in a docker container through subnet 10.81. We also used Ineress network which has the benefits of not creating a subnet manually or a DMZ zone
-
-
+In the diagram we show that we are hosting HUGO webserver in a docker 
+container through subnet 10.81. We also used t8g1-ingress overlay network 
+which has the benefits of automatically creating a subnet or which by 
+our individual VM's firewall rules, is isolated from the network like 
+and per docker's generous acceptance strategy of accepting everything 
+from anywhere to anywhere effectively becomes a DMZ zone.
 ***
 ### 5. Docker or lxd for our server, and why?
 We have chosen to go for docker on our server. There are a couple reasons for that. Our server is rather simple, we are hosting a website using Hugo, which already has an official docker container. So it seemed like a no-brainer. lxd has many advanced features that wouldn't be utilized in out setup, therefore i makes sense to use a more userfriendly and still powerful tool like docker. A problem with docker is that we can only run one concurrent process for each container, therefore setups with multiple docker containers are fairly standard. lxc on the other hand is more than capable of runnig multiple concurrent processes in one acontainer. Docker is also far more portable and depends more on the operating system it runs on than lxd. lxd is closest to a whole operating system out of the two, it operates like a vm machine, but without a fully kitted OS. Docker is less like a virtual machine in that regard as mentioned earlier it only handles one concurrent process, which makes it ideal to have a single program running in a container.

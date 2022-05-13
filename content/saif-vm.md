@@ -1,6 +1,6 @@
 ---
 title: VM@Saif
-prev: group-vm
+prev: topology
 next: nikolaj-vm
 ---
 

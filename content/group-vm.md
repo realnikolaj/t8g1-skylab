@@ -1,7 +1,7 @@
 ---
 title: VM@Group
 prev: "/"
-next: saif-vm
+next: topology
 ---
 
 ## Group VM

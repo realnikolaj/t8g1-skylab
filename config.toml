@@ -12,6 +12,9 @@ theme = "theme"
         label = "Group vm"
         link = "/group-vm"
     [[params.nav]]
+        label = "Topology"
+        link = "/topology"
+    [[params.nav]]
         label = "Saif vm"
         link = "/saif-vm"
     [[params.nav]]

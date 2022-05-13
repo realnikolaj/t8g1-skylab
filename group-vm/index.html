@@ -130,42 +130,39 @@ this run configuration to enable host network traficking directly to the squid c
 </span><span style=color:#ae81ff></span>         --volume /srv/docker/squid/cache:/var/cache/squid <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>         -e TZ<span style=color:#f92672>=</span>Europe/Copenhagen <span style=color:#ae81ff>\
 </span><span style=color:#ae81ff></span>         ubuntu/squid:latest
-</code></pre></div><h3 id=2-pass-all-traffic-from-group-vm-through-squid-and-adjust-firewall>2. Pass all traffic from group VM through squid and adjust firewall:</h3><h3 id=3-pro-and-cons-to-using-a-proxy-for-all-traffic>3. Pro and cons to using a proxy for all traffic:</h3><p>There are several pros and cons to using a proxy server. Security wise, a proxy server helps with protecfting a clients computer. It works like a relay between the browser and the website, since the browser doesn&rsquo;t directly speak to the website, it has to go through the proxy first. The reason for the proxy to act as a relay is if the website tries something malicious, it will hit the proxy server and not the clients computer. A proxy server can also give a faster browsing experience on the clints most used sites, since a proxy server stores a local cache. Even when managing an office or a school, can a proxy server have its uses. By running all the workers/students browsing through the proxy, an administrator can easily monitor the webtraffic, since all browsing has to go through the proxy. Not only that a proxy server can also use to block specific websites eg. malicious websites, or even social media websites, to keep your employees from entering them.<br>What is then bad about proxy servers? Well not much, but if the provider of the proxy server has malicious intent, it could cause harm for the client. As mentioned earlier, a proxy server keeps a cache for a faster browsing experience and to save bandwidth. THe problem with that is it could also store private information like passwords and other details, which the provider of the proxy server can have or gain access to. For that reason it is important to have trusted provider, or create a proxy server inhouse.
-<code></p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Shell data-lang=Shell>bash cat
-</code></pre></div><code><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> 
-
-</code></pre></div><h2 id=4-have-a-common-folder-for-the-group-to-share-files-and-logs>4. Have a common folder for the group to share files and logs</h2><p>Firstly we created a folder on our group vm /usr/local/share</p><pre><code>/usr/local/share
-└─── Nik
-│     │   subfolders
-│     │   files
-│     │   etc...
-│     │
-│     └─── share
-│          │   log.txt
-│          │   file112.txt
-│          │   ...
-│   
-└─── Emin
-│    │   subfolders
+</code></pre></div><hr><h3 id=2-pass-all-traffic-from-group-vm-through-squid-and-adjust-firewall>2. Pass all traffic from group VM through squid and adjust firewall:</h3><hr><h3 id=a-nameid-1ba-3-pro-and-cons-to-using-a-proxy-for-all-traffic><a name=id-1b></a>3. Pro and cons to using a proxy for all traffic:</h3><p>There are several pros and cons to using a proxy server. Security wise, a proxy server helps with protecfting a clients computer. It works like a relay between the browser and the website, since the browser doesn&rsquo;t directly speak to the website, it has to go through the proxy first. The reason for the proxy to act as a relay is if the website tries something malicious, it will hit the proxy server and not the clients computer. A proxy server can also give a faster browsing experience on the clints most used sites, since a proxy server stores a local cache. Even when managing an office or a school, can a proxy server have its uses. By running all the workers/students browsing through the proxy, an administrator can easily monitor the webtraffic, since all browsing has to go through the proxy. Not only that a proxy server can also use to block specific websites eg. malicious websites, or even social media websites, to keep your employees from entering them.<br>What is then bad about proxy servers? Well not much, but if the provider of the proxy server has malicious intent, it could cause harm for the client. As mentioned earlier, a proxy server keeps a cache for a faster browsing experience and to save bandwidth. The problem with that is it could also store private information like passwords and other details, which the provider of the proxy server can have or gain access to. For that reason it is important to have trusted provider, or create a proxy server inhouse.</p><hr><h3 id=a-nameid-1ca-4-have-a-common-folder-for-the-group-to-share-files-and-logs><a name=id-1c></a>4. Have a common folder for the group to share files and logs</h3><p>Firstly we create a folder for every individual on our group vm /usr/local/share with this kind of folder structure:</p><pre><code>/usr/local/share
+└─── nik
 │    │   files
 │    │   etc...
-│    │
-│    └─── share 
-│         │   log.txt
-│         │   file112.txt
-│         │   ...
+│    └─  subfolders
+│   
+└─── emin
+│    │   files
+│    │   etc...
+│    └─  subfolders
 │
-└─── Saif
-     │   subfolders
-     │   files
-     │   etc...
-     │
-     └─── share
-          │   log.txt
-          │   file112.txt
-          │   ...
-
-</code></pre><p>We want it so everyone can work within their own folders, and then use their indiv</p><p>We then setup an nfs server and mount our individual folder</p><ol start=5><li></li></ol><ol start=6><li>Install a service in docker of your choosing as group which you think will need to share amongst the group,
+└─── saif
+│     │   files
+│     │   etc...
+│     └─  subfolders
+│
+└─── shared
+      │   saif-logs.txt
+      │   emin-logs.txt
+      │   nik-logs.txt
+</code></pre><p>We want it so everyone can work within their own folders, and then use the share folder to share logs and other files. We want to make sure everyone only has access to their individual folder, while they all have access to the share folder. Although they should only be able to modify and delete their own files in the share folder.<br>First we want to make sure permissions are correct, and we start by adding a group, and a user for each individual. We then assign each individual to their own group and to the main group.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ groupadd t8g1-skylab
+$ groupadd emin/nik/saif
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ useradd emin/nik/saif
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ usermod -a -G t8g1-skylab emin/nik/saif
+$ usermod -a -G emin/nik/saif emin/nik/saif
+</code></pre></div><p>After adding groups and assigning the individual users to the desired group we assign each directory to a group.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ chgrp -R emin/nik/saif /usr/local/share/<span style=color:#f92672>(</span>emin/nik/saif<span style=color:#f92672>)</span>
+$ chgrp -R t8g1-skylab /usr/local/share/shared
+</code></pre></div><p>After assigning each directory to a group, we can then set permissions.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ chmod g+w /usr/local/share/<span style=color:#f92672>(</span>emin/nik/saif<span style=color:#f92672>)</span>
+$ chmod g+w /usr/local/share/shared
+</code></pre></div><p>Now each individual has access to their own directory, and the all have access to the shared directory. Now we have to make it so only the creator of the file in the shared direcotry can modify it.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>chmod +t /usr/local/share/shared
+</code></pre></div><p>We then setup an nfs server and mount our individual folder and the shared folder on our individual vms. We setup the nfs server on our group vm, and make sure we give rw access, so if the user mounting the nfs is in the correct group, he or she shoud have rw access.<br>To mount the nfs filesystem we need to have the nfs client package installed.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ sudo apt install nfs-common
+</code></pre></div><p>Then we mount:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ sudo mount -t nfs 192.168.165.1:/usr/local/share/<span style=color:#f92672>(</span>shared_or_emin...<span style=color:#f92672>)</span> /the_directory_we_want_to_mount_it_on_local_machine
+</code></pre></div><p>We can now through our own machine access our directories and the shared directory</p><ol start=5><li></li></ol><ol start=6><li>Install a service in docker of your choosing as group which you think will need to share amongst the group,
 for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your
 group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on )</li></ol><p>We&rsquo;ve opted to present a static website using Hugo and its official docker container as a service on the docker swarm.
 The

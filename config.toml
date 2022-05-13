@@ -4,7 +4,7 @@ description = "At IT@Skylab administrators develop and monitor critical business
 relativeURLs = true
 theme = "theme"
 [params]
-    authors = ["Nikolaj S. Povlsen, Saif, Emin"]
+    authors = ["Nikolaj S. Povlsen, Saif Ali, Emin Olcer"]
     notebook = "/explainer-notebook.html"
     data = "https://doc.opensuse.org"
     github = "https://github.com/realnikolaj/t8g1-skylab"

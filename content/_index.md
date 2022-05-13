@@ -99,13 +99,13 @@ network topology and documentation for users and administrators along with the s
    6. [-] Install a service in docker of your choosing as group which you think will need to share amongst the group, 
       for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your 
       group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on )  [See page #1: Group-vm](group-vm)  
-   7. [ ] Update the firewall to allow limited traffic from DMZ only to be able to use that service  
+   7. [x] Update the firewall to allow limited traffic from DMZ only to be able to use that service  [See page #1: Group-vm](group-vm)
 2. In your individual VM
     1. [x] Setup & Configure the LXD or docker  
     2. [ ] [optional] get ip address for LXD or Docker from dhcp server on
 groupVM  
     3. [ ] Setup security for your individual server and the containers you will run  
-    4. [ ] Discuss the security and other networking considerations for keeping containers isolated from local 
+    4. [x] Discuss the security and other networking considerations for keeping containers isolated from local 
        network and making them available over the local network  
 3. Design a network topology (not configure) for the whole group  
    1. [ ] Database server (mysql, mongo,postgres)  

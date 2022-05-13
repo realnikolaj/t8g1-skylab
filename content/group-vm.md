@@ -69,7 +69,7 @@ What is then bad about proxy servers? Well not much, but if the provider of the 
 
 <a name="id-1c"></a>
 ***
-
+## NFS
 ### 4. Have a common folder for the group to share files and logs
 
 Firstly we create a folder for every individual on our group vm /usr/local/share with this kind of folder structure:

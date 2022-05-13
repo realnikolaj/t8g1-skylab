@@ -55,6 +55,7 @@ $ docker run -d --name squid -p  \
          -e TZ=Europe/Copenhagen \
          ubuntu/squid:latest
 ```
+<a name="id-1a"></a> 
 ***
 ### 2. Pass all traffic from group VM through squid and adjust firewall:
 

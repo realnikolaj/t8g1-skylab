@@ -113,10 +113,15 @@ for example authentication server, DNS server etc. Create a DMZ(a separate subne
 group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12
 and so on ) <a href=./group-vm>See Custom ingress in section: Group-vm</a></li><li><input checked disabled type=checkbox> Update the firewall to allow limited traffic from DMZ only to
 be able to use that service <a href=./group-vm>See Mad docker in section:
-Group-vm</a></li></ol></li><li>In your individual VM<ol><li><input checked disabled type=checkbox> Setup & Configure the LXD or docker</li><li><input disabled type=checkbox> <del>[optional] get ip address for LXD or Docker from dhcp server on
+Group-vm</a></li></ol></li><li>In your individual VM<ol><li><input checked disabled type=checkbox> Setup & Configure the LXD or docker <a href=./>See Host cards in section:
+T8G1-Skylab</a></li><li><input disabled type=checkbox> <del>[optional] get ip address for LXD or Docker from dhcp server on
 groupVM</del></li><li><input checked disabled type=checkbox> Setup security for your individual server and the containers
 you will run <a href=./nikolaj-vm>See Security in section: nikolaj-vm</a></li><li><input checked disabled type=checkbox> Discuss the security and other networking considerations for keeping containers isolated from local
-network and making them available over the local network <a href=./nikolaj-vm>See Security in section: nikolaj-vm</a></li></ol></li><li>Design a network topology (not configure) for the whole group<ol><li><input disabled type=checkbox> Database server (mysql, mongo,postgres)</li><li><input disabled type=checkbox> Webserver (nginx,apache, caddy)</li><li><input disabled type=checkbox> Real time communication server (jitsi, matrix)</li><li><input disabled type=checkbox> Git server</li><li><input disabled type=checkbox> Any other type of container you think will be relevant</li><li><input disabled type=checkbox> File server (Seafile, owncloud,nextcloud)</li></ol></li><li><input disabled type=checkbox> Decide where in the topology will you place the various servers. Setting up lxd on GroupVM is not a trivial task
+network and making them available over the local network <a href=./nikolaj-vm>See Security in section: nikolaj-vm</a></li></ol></li><li>Design a network topology (not configure) for the whole group<ol><li><input disabled type=checkbox> <del>Database server (mysql, mongo,postgres)</del></li><li><input disabled type=checkbox> Webserver (nginx,apache, caddy) <a href=./topology>See Topology in section:
+Topology</a></li><li><input disabled type=checkbox> <del>Real time communication server (jitsi, matrix)</del></li><li><input disabled type=checkbox> <del>Git server</del></li><li><input checked disabled type=checkbox> Any other type of container you think will be relevant <a href=./topology>See Topology in section:
+Topology</a></li><li><input checked disabled type=checkbox> File server (Seafile, owncloud,nextcloud) <a href=./topology>See Topology in section:
+Topology</a></li></ol></li><li><input checked disabled type=checkbox> Decide where in the topology will you place the various servers.
+Setting up lxd on GroupVM is not a trivial task
 so anything there has to docker but in the documentation you can
 argue if you would rather used lxd and why? <a href=./topology>See Containers in section:
 Topology</a></li><li><input checked disabled type=checkbox> Which virtualization technology between docker and lxd will you
@@ -129,5 +134,255 @@ individually and for the setup as a whole <a href=./group-vm>See Mad docker in s
 vulnerabilities in the server setup of other groups<ol><li><input disabled type=checkbox> <del>You can reconfigure your switch(just add the vlan of the group
 so that you can get ip from their dhcp) to access other groups local network in the class</del></li><li><input disabled type=checkbox> <del>Then you can run these vulnerability scanners like nmap and nikto to find out more about their network,
 services etc.</del></li><li><input disabled type=checkbox> <del>Document your findings, vulnerabilities and suggest way to protect/attack the vulnerabilities</del></li></ol></li></ol><p>62501 Linux Server and Network Course at DTU, spring 2022 edition.</p><h2 id=t8g1-skylab>T8G1-Skylab</h2><hr><h3 id=host-cards>Host cards</h3><p>This configuration contains four docker worker nodes with two of them
-assigned the swarm managing role.</p><p><carcontainer id=singlecard><span class=vm-card></span><div class=card><h2>VM@Group</h2><ul id=double><span class=group-list></span><li>Docker swarm manager</li><li>Squid proxy</li><li>Firewall</li><li>DHCP server</li></ul><a href=Group-vm>See more</a></div></p></div><div class=cardContainer><div class=card><h2>VM@Saif</h2><ul id=single><span class=student-list></span><li>Docker worker</li><li>Jira container</li></ul><a href=saif-vm>See more</a></div><div class=card><h2>VM@Nikolaj</h2><ul id=single><span class=student-list></span><li>Docker swarm manager</li><li>Hugo replica</li><li>Image registry</li></ul><a href=nikolaj-vm>See more</a></div><div class=card><h2>VM@Emin</h2><ul id=single><span class=student-list></span><li>Docker worker</li><li>Unbound DNS</li></ul><a href=emin-vm>See more</a></div></div><h2 id=read-the-reportt8g1-skylab-repporthtml><a href=t8g1-skylab-repport.html>Read the report</a></h2><hr class="border-b-2 border-gray-400 mt-8 mx-4"><div class="font-sans flex justify-between content-center px-4 pb-12"><div class=text-left></div><div class=text-right><p><a href=./group-vm class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">Next
+assigned the swarm managing role.</p><p><carcontainer id=singlecard><span class=vm-card></span><div class=card><h2>VM@Group</h2><ul id=double><span class=group-list></span><li>Docker swarm manager</li><li>Squid proxy</li><li>Firewall</li><li>DHCP server</li></ul><a href=group-vm>See more</a></div></p></div><div class=cardContainer><div class=card><h2>VM@Saif</h2><ul id=single><span class=student-list></span><li>Docker worker</li><li>Jira container</li></ul><a href=saif-vm>See more</a></div><div class=card><h2>VM@Nikolaj</h2><ul id=single><span class=student-list></span><li>Docker swarm manager</li><li>Hugo replica</li><li>Image registry</li></ul><a href=nikolaj-vm>See more</a></div><div class=card><h2>VM@Emin</h2><ul id=single><span class=student-list></span><li>Docker worker</li><li>Unbound DNS</li></ul><a href=emin-vm>See more</a></div></div><h2 id=read-the-reportt8g1-skylab-repporthtml><a href=t8g1-skylab-repport.html>Read the report</a></h2><h1 id=group-vm>Group VM</h1><h2 id=rootless-docker>Rootless docker</h2><hr><p>Installing docker on our group vm requires carefull considerations regarding the security measure already implemented.
+If a
+rootless docker principle is
+not established on the docker host, any container running will have root privileges which isn&rsquo;t really an issue for
+veteran sysadmins that knows have to restrict access to the docker daemon using aswell firewall or custom docker
+registries to allow only vetted and verified container images to run, but in the hands of non-experienced employee a
+non-rootless docker client will run any code within any docker image.
+The second major
+concern is regarding
+the iptables chains and rules applied to the group vm acting as the network&rsquo;s firewall. The group vm acts as a router
+for our
+internal network and routes network traffic between clients and forwards client trafic to the internet using Network
+Address so that any packets originating from our clients destined to the internet will have their source headers
+translated to that if the internet facing router i.e. our group host. Upon starting the docker daemon, the socket
+responsible for talking to the docker client service and the containers within, new docker specific chains and rules
+gets
+applied to the iptables with the <code>-I</code> prefix for insertion. This is not a major concern if your aware of
+this fact, but the <code>FORWARD</code> chain policy gets set to <code>DROP</code>
+requiring
+manual
+configuration to any
+docker host also acting as a router.
+From docker documentation this iptables rule is supplied to help reenable ip forwarding:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh> $ iptables -I DOCKER-USER -i src_if -o dst_if -j ACCEPT
+</code></pre></div><p>We&rsquo;ve opted to run the docker in root mode for a few reasons:</p><ol><li>We&rsquo;re under development and only configurations and log files could contain sensitive information about the
+networks' inner workings, parameters that would resemble many other networks thus if there were to be an exploit
+in our parameters we would likely be able to mitigate these before production.</li><li>Being forced to make the aforementioned critical considerations allows for a good learning environment, producing
+a highly skilled, security oriented IT staff.</li><li>Docker swarm isn&rsquo;t supported under rootless docker mode.</li></ol><h2 id=squid>Squid</h2><hr><h3 id=1-installing-docker-and-moving-squid-into-docker>1. Installing Docker and moving squid into docker:</h3><p>Using the default image registry supplied with docker, we pull and run the <code>ubuntu:squid</code> container using
+this run configuration to enable host network traficking directly to the squid container:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh>$ docker run -d --name squid -p  <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>         --volume /etc/squid/squid.conf:/etc/squid/squid.conf <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>         --volume /srv/docker/squid/log:/var/log/squid <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>         --volume /srv/docker/squid/cache:/var/cache/squid <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>         -e TZ<span style=color:#f92672>=</span>Europe/Copenhagen <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>         ubuntu/squid:latest
+</code></pre></div><h2 id=proxy>Proxy</h2><hr><h3 id=2-pass-all-traffic-from-group-vm-through-squid-and-adjust-firewall>2. Pass all traffic from group VM through squid and adjust firewall:</h3><p>Below configuration implements policy routing for separate gateway and
+squid hosts</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh><span style=color:#75715e># IPv4 address of proxy</span>
+PROXYIP4<span style=color:#f92672>=</span> 192.168.0.10
+
+<span style=color:#75715e># IPv6 address of proxy</span>
+PROXYIP6<span style=color:#f92672>=</span> fe80:dead:beef::10
+
+<span style=color:#75715e># interface facing clients</span>
+CLIENTIFACE<span style=color:#f92672>=</span> eth0
+
+<span style=color:#75715e># arbitrary mark used to route packets by the firewall. May be anything \</span>
+<span style=color:#75715e># from 1 to 64.</span>
+FWMARK<span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>
+
+
+<span style=color:#75715e># permit Squid box out to the Internet</span>
+iptables -t mangle -A PREROUTING -p tcp --dport <span style=color:#ae81ff>80</span> -s $PROXYIP4 -j ACCEPT
+ip6tables -t mangle -A PREROUTING -p tcp --dport <span style=color:#ae81ff>80</span> -s $PROXYIP6 -j ACCEPT
+
+<span style=color:#75715e># mark everything else on port 80 to be routed to the Squid box</span>
+iptables -t mangle -A PREROUTING -i $CLIENTIFACE -p tcp --dport <span style=color:#ae81ff>80</span> -j <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>MARK --set-mark $FWMARK
+iptables -t mangle -A PREROUTING -m mark --mark $FWMARK -j ACCEPT
+ip6tables -t mangle -A PREROUTING -i $CLIENTIFACE -p tcp --dport <span style=color:#ae81ff>80</span> -j <span style=color:#ae81ff>\ </span>
+MARK --set-mark $FWMARK
+ip6tables -t mangle -A PREROUTING -m mark --mark $FWMARK -j ACCEPT
+
+<span style=color:#75715e># NP: Ensure that traffic from inside the network is allowed to loop \  </span>
+<span style=color:#75715e>#back inside again.</span>
+iptables -t filter -A FORWARD -i $CLIENTIFACE -o $CLIENTIFACE -p tcp <span style=color:#ae81ff>\ </span> 
+--dport <span style=color:#ae81ff>80</span> -j ACCEPT
+ip6tables -t filter -A FORWARD -i $CLIENTIFACE -o $CLIENTIFACE -p tcp <span style=color:#ae81ff>\ </span>
+ --dport <span style=color:#ae81ff>80</span> -j ACCEPT
+</code></pre></div><h3 id=3-pro-and-cons-to-using-a-proxy-for-all-traffic>3. Pro and cons to using a proxy for all traffic:</h3><p>There are several pros and cons to using a proxy server. Security wise, a proxy server helps with protecfting a clients computer. It works like a relay between the browser and the website, since the browser doesn&rsquo;t directly speak to the website, it has to go through the proxy first. The reason for the proxy to act as a relay is if the website tries something malicious, it will hit the proxy server and not the clients computer. A proxy server can also give a faster browsing experience on the clints most used sites, since a proxy server stores a local cache. Even when managing an office or a school, can a proxy server have its uses. By running all the workers/students browsing through the proxy, an administrator can easily monitor the webtraffic, since all browsing has to go through the proxy. Not only that a proxy server can also use to block specific websites eg. malicious websites, or even social media websites, to keep your employees from entering them.<br>What is then bad about proxy servers? Well not much, but if the provider of the proxy server has malicious intent, it could cause harm for the client. As mentioned earlier, a proxy server keeps a cache for a faster browsing experience and to save bandwidth. THe problem with that is it could also store private information like passwords and other details, which the provider of the proxy server can have or gain access to. For that reason it is important to have trusted provider, or create a proxy server inhouse.</p><h2 id=nfs>NFS</h2><hr><h3 id=4-have-a-common-folder-for-the-group-to-share-files-and-logs>4. Have a common folder for the group to share files and logs</h3><p>Firstly we create a folder for every individual on our group vm /usr/local/share with this kind of folder structure:</p><pre><code>/usr/local/share
+└─── nik
+│    │   files
+│    │   etc...
+│    └─  subfolders
+│   
+└─── emin
+│    │   files
+│    │   etc...
+│    └─  subfolders
+│
+└─── saif
+│     │   files
+│     │   etc...
+│     └─  subfolders
+│
+└─── shared
+      │   saif-logs.txt
+      │   emin-logs.txt
+      │   nik-logs.txt
+</code></pre><p>We want it so everyone can work within their own folders, and then use the share folder to share logs and other files. We want to make sure everyone only has access to their individual folder, while they all have access to the share folder. Although they should only be able to modify and delete their own files in the share folder.<br>First we want to make sure permissions are correct, and we start by adding a group, and a user for each individual. We then assign each individual to their own group and to the main group.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ groupadd t8g1-skylab
+$ groupadd emin/nik/saif
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ useradd emin/nik/saif
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ usermod -a -G t8g1-skylab emin/nik/saif
+$ usermod -a -G emin/nik/saif emin/nik/saif
+</code></pre></div><p>After adding groups and assigning the individual users to the desired group we assign each directory to a group.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ chgrp -R emin/nik/saif /usr/local/share/<span style=color:#f92672>(</span>emin/nik/saif<span style=color:#f92672>)</span>
+$ chgrp -R t8g1-skylab /usr/local/share/shared
+</code></pre></div><p>After assigning each directory to a group, we can then set permissions.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ chmod g+w /usr/local/share/<span style=color:#f92672>(</span>emin/nik/saif<span style=color:#f92672>)</span>
+$ chmod g+w /usr/local/share/shared
+</code></pre></div><p>Now each individual has access to their own directory, and the all have access to the shared directory. Now we have to make it so only the creator of the file in the shared direcotry can modify it.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>chmod +t /usr/local/share/shared
+</code></pre></div><p>We then setup an nfs server and mount our individual folder and the shared folder on our individual vms. We setup the nfs server on our group vm, and make sure we give rw access, so if the user mounting the nfs is in the correct group, he or she shoud have rw access.<br>To mount the nfs filesystem we need to have the nfs client package installed.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ sudo apt install nfs-common
+</code></pre></div><p>Then we mount:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ sudo mount -t nfs 192.168.165.1:/usr/local/share/<span style=color:#f92672>(</span>shared_or_emin...<span style=color:#f92672>)</span> /the_directory_we_want_to_mount_it_on_local_machine
+</code></pre></div><p>We can now through our own machine access our directories and the shared directory</p><h2 id=custom-ingress>Custom ingress</h2><hr><h3 id=6-install-a-service-in-docker-of-your-choosing-as-group-which-you>6. Install a service in docker of your choosing as group which you</h3><p>think will need to share amongst the group,
+for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your
+group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on )</p><p>We&rsquo;ve opted to present a static website using Hugo and its official docker container as a service on the docker swarm.
+The
+service is created and attached to a
+custom ingress network which is a an overlay type network exclusive for docker nodes running in swarm mode. The ingress
+network and any other custom overlay networks are connected to the docker daemons physical network on each
+individiul node through a virtual bridge <code>docker_gwbridge</code> enabling each node accept trafic destined for
+the swarm service even when no task is running on the specific node. This relieves
+the need
+for for
+manually
+creating a subnet or DMZ zone on our dhcp
+server and negates the need for manipulating the iptables in our firewall, since this is done by the docker service. A
+docker swarm automatically
+initializes
+an overlay network called <code>ingress</code> which we reconfigured using the bellow commands:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh> $ docker network rm ingress
+ $ docker network create <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --driver overlay <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --ingress <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --subnet<span style=color:#f92672>=</span>10.81.0.0/16 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --gateway<span style=color:#f92672>=</span>10.81.0.2 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --opt com.docker.network.driver.mtu<span style=color:#f92672>=</span><span style=color:#ae81ff>1200</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    t8g1-ingress
+</code></pre></div><p>The ingress network, and any
+overlay type
+networks encrypts management trafic between the nodes rotating the AES key every 12 hours. A docker swarm
+also allows for splitting management and data trafic onto separate network interfaces using the
+<code>&ndash;advertise-addr</code> and <code>&ndash;datapath-addr</code> for each node when joining the swarm or at swarm
+initialization.
+Overlay networks such as the ingress network and any custom overlay networks acts
+as a
+load-balancing proxy for optimizing connections to the services within them, which a: improves loading time for
+requests to services with replicas i.e. multiple, indentical and independent tasks of a single service
+distributed in the swarm and b:
+enables
+sys-admins to create custom policies for updating services allowing rules to keep a certain amount of tasks running
+at all times during the update process and thus increasing availability to the service.<br>Only custom overlay networks i.e. networks created without the parameter and option: <code>&ndash;mode ingress</code> permits
+setting
+the
+attachable flag enabling
+standalone containers to attach to
+the network.
+It is recommended to always create separate custom overlay networks for independent services.</p><h2 id=mad-docker>Mad docker</h2><hr><h3 id=7-update-the-firewall-to-allow-limited-traffic-from-dmz-only-to-be-able-to-use-that-service>7. Update the firewall to allow limited traffic from DMZ only to be able to use that service</h3><p>As mentioned simple firewall rules gets cluttered by the docker clients running on each node. Extensive measure must
+be taken to secure the network and especially the containers running withing it.
+As a deafult docker will open any published ports from services and standalone containers to the external network,
+and running these services and containers in a non-rootless docker environment which is dictated by the docker
+engine when running docker in swarm mode, exposes the integrety of the entire network. Luckyli the official
+documentation for docker is an endless source of consideration and warnings regarding the &ldquo;feature&rdquo; and supplies
+several recommendations for securing the environment.
+Docker creates new iptables chains per default and drops all forwarding on the host, which is an issue for the group
+vm which also acts as a router. The following command reenables forwarding on the group vm:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh>$ iptables -I DOCKER-USER -i src_if -o dst_if -j ACCEPT
+</code></pre></div><p>When starting a service or a container created with the flags <code>&ndash;publish [host_port]:[container_port]</code>
+docker will
+insert
+rules in the
+DOCKER chain opening the specified host port on the interface upon which docker binds which is <code>0.0.0.0</code>
+by default. This means that docker will listen for any incomming requests on those ports from any interface on the
+host!
+A simply but not commonly known fix is to specifiy the entire host and port on which to listen for requests:
+<code>&ndash;publish 192.168.165.1:3128:3128</code>.
+At first having such a significant setting enabled by default seems malignant, but it actually offers a very
+opportune scenario where we can restrict access to the network pre-docker, blocking any and all
+trafic not originating
+from within the network, and let docker and running containers or services dictate which ports to open.
+We consider this way of configuring the firewall optimal given the requirements posed upon our network by
+docker.
+The following table implemented on our group vm drops all trafic except ssh trafic to the network, outgoing connections
+from withing the internal LAN and then uses the DOCKER_USER chain to insert custom rulesets that will do the very
+same thing only this chain superceeds the DOCKER chain that initializes once the docker service is running, this
+incremental configuration is remniscent of common UNIX package and services behavior where administrator are
+instructed or discouraged from altering the default configuration files and instead use custom user configuration
+which the package software will se as overruling to any default settings and also like how shell profile scripts
+exists at various levels for contemplating structured and context aware behavior such as simply providing defaults
+to multiple users and allowing users to overrule the defaults.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh><span style=color:#75715e>#!/bin/bash
+</span><span style=color:#75715e></span>INET_IF<span style=color:#f92672>=</span>eth0
+IPTABLES<span style=color:#f92672>=</span>/usr/sbin/iptables
+
+<span style=color:#75715e>#This will purge the firewall rules</span>
+$IPTABLES -F
+$IPTABLES -t nat -F
+$IPTABLES -X
+
+<span style=color:#75715e>#A new chain &#34;block&#34; is used and will new connection from within and </span>
+<span style=color:#75715e># accept only already established by LAN connections</span>
+<span style=color:#75715e>#Incoming tcp trafic is accepted to the default ssh port 22</span>
+<span style=color:#75715e>#Anything else gets droped ... but only until starting a docker</span>
+<span style=color:#75715e># container/service that listens on a port</span>
+$IPTABLES -N block
+$IPTABLES -A block -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+$IPTABLES -A block -m conntrack --ctstate NEW ! -i  $INET_IF -j ACCEPT
+$IPTABLES -A block -p tcp --dport ssh -j ACCEPT
+$IPTABLES -A block -j DROP
+
+<span style=color:#75715e>#These chains gets redirected to the block chain, they&#39;re needed for</span>
+<span style=color:#75715e># actually providing the block chain with trafic</span>
+$IPTABLES -A INPUT -j block
+$IPTABLES -A FORWARD -j block
+
+<span style=color:#75715e>#Here we use the &#34;-I&#34; option to skip or circumvent any docker created</span>
+<span style=color:#75715e># rules and go straight to the block chain</span>
+<span style=color:#75715e>#This rule also works for reenabling FORWARDING on hosts running docker</span>
+<span style=color:#75715e># that also must suply routing capabilities </span>
+<span style=color:#75715e>#for our network</span>
+$IPTABLES -I DOCKER_USER -j block
+
+<span style=color:#75715e>#If external access is actually needed or if connection tracking isn&#39;t </span>
+<span style=color:#75715e># wanted from DOCKER originating packets</span>
+<span style=color:#75715e>#those rules must be prepended aswell to apply before the redirect rule</span>
+<span style=color:#75715e># above.</span>
+<span style=color:#75715e>#EXAMPLE: #iptables -I DOCKER-USER -i $src_if -o $dst_if -j ACCEPT</span>
+
+<span style=color:#75715e>#Masquerade</span>
+$IPTABLES -t nat -A POSTROUTING -o $INET_IF -j MASQUERADE
+</code></pre></div><h2 id=topology>Topology</h2><hr><h3 id=3-topology>3. Topology</h3><p><img src=./images/Networkdiagram.png width=800></p><p>We have now designed a sketch of our network topology, which can be seen in the picture above.
+In the diagram we show that we are hosting HUGO webserver in a docker
+container through subnet 10.81. We also used t8g1-ingress overlay network
+which has the benefits of automatically creating a subnet that of which,
+by
+our individual VM&rsquo;s strict firewall rules <a href=./nikolaj-vm>See Security in section: nikolaj-vm</a>, is isolated from the
+network and per docker&rsquo;s generous trafic acceptance strategy as in:
+accepting
+anything and everything from anywhere to everywhere, effectively becomes
+a DMZ zone.</p><h3 id=5-docker-or-lxd-for-our-server-and-why>5. Docker or lxd for our server, and why?</h3><p>We have chosen to go for docker on our server. There are a couple reasons for that. Our server is rather simple, we are hosting a website using Hugo, which already has an official docker container. So it seemed like a no-brainer. lxd has many advanced features that wouldn&rsquo;t be utilized in out setup, therefore i makes sense to use a more userfriendly and still powerful tool like docker. A problem with docker is that we can only run one concurrent process for each container, therefore setups with multiple docker containers are fairly standard. lxc on the other hand is more than capable of runnig multiple concurrent processes in one acontainer. Docker is also far more portable and depends more on the operating system it runs on than lxd. lxd is closest to a whole operating system out of the two, it operates like a vm machine, but without a fully kitted OS. Docker is less like a virtual machine in that regard as mentioned earlier it only handles one concurrent process, which makes it ideal to have a single program running in a container.</p><p>Another importatant reason why we went with docker, is that we discovered its swarm functionality, which is very easy to setup across multiple hosts. It is also very powerful. <a href=./group-vm>See Security in mad docker in section: group-vm</a> When utilizing the swarm functionality it does our dmz with the subnet for us in a much easier way, than it would have been if we were using lxd.</p><h2 id=docker-worker-node>Docker worker node</h2><hr><blockquote><p>Hugo task service</p></blockquote><h2 id=jira-container>Jira Container</h2><hr><p>In my personal vm i want to set up a jira container
+Since we want to be a hosting, deployment and infrastructure service, it would be essential to have a tool to help us with managing our projects. Jira is basically a ticket managing software, which will help us delegate work and help us with bug tracking.
+To set it up it will be as simple as to use the jiras docker image (I hope)</p><h2 id=containers>Containers</h2><hr><p>Apart from being the leading node and one of the two managers
+responsible for creating the custom overlay networks this host also
+participates in running one replica of the Hugo webservice distributed
+on the t8g1-ingress network.
+One standalone container running in host mode supplies a local
+registry which purpose is to ensure
+a higher level of network integrity by allowing only a subset of
+container images to be deployed throughout all docker nodes. This
+measure is highly relevant for docker clusters running in swarm mode
+where rootless docker is not supported <a href=./group-vm>See rootless docker in section:
+Group-vm</a></p><h2 id=security>Security</h2><hr><p>Our reasonably hardened firewall doesn&rsquo;t cover mitm attacks such as
+rouge services or containers, but by utilizing docker clients extensive
+nework measure and implementing the same overriding rule on each
+individual client running docker, we can lock back down all routes and
+isntead utilize the custom t8g1-ingress network created by a managing
+node such as Group VM or Nikolaj VM. Having two or more, managing nodes
+is highly recomend for fault taularance in case of e.g. network
+failures or a single unresponsive manager. We define similar iptables
+as the group vm, but importatantly is that upon initializing the docker
+daemon we configure it to bind to only the loopback and prohibits any
+trafic outside of the required ports for swarm overlay communication.</p><h2 id=unbound>Unbound</h2><hr><p>I want to implement an Unbound DNS in a container. Unbound is a
+recursive DNS resolver, which has the benefits of increasing online
+privacy. Furthermore, a user can encrypt communication because it
+supports DNS-over-HTTPS and DNS-over-TLS and unbound also makes sure
+that the data which is exchanged to the authoritative servers are
+limited. All this makes the DNS stronger which help to improve privacy.
+We want to use unbound because it is one of the best ways to secure a
+DNS server.</p><p>Group T8G1</p><p>Project Assignment</p><p>62501 Linux Server and Network Course at DTU, spring 2022 edition.</p><p><img src=./images/dtu-logo.png alt></p><p><img src=./images/dtu-logo.png width=200></p><hr class="border-b-2 border-gray-400 mt-8 mx-4"><div class="font-sans flex justify-between content-center px-4 pb-12"><div class=text-left></div><div class=text-right><p><a href=./group-vm class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">Next
 Page ></a></p></div></div></div></div><footer class="bg-white border-t border-gray-400 shadow"><div class="container max-w-4xl mx-auto flex py-8"><div class="w-full mx-auto flex flex-col"><div class="flex w-full"><div class="px-8 mx-auto"><ul class="pt-3 list-none px-0 flex"><li><a class="text-gray-600 no-underline py-2" href=./explainer-notebook.html><i data-feather=file-text class=footer-icon></i></a></li><li><a class="text-gray-600 no-underline py-2" href=https://github.com/realnikolaj/t8g1-skylab><i data-feather=github class=footer-icon></i></a></li><li><a class="text-gray-600 no-underline py-2" href=https://doc.opensuse.org><i data-feather=hard-drive class=footer-icon></i></a></li></ul></div></div><div class="w-full mx-auto text-center"><ul class="list-reset items-center text-md py-6 list-none flex"><li class=mx-auto><p class="inline-block text-gray-600 mx-4 font-semibold capitalized">Nikolaj S. Povlsen, Saif Ali, Emin Olcer</p></li></ul></div></div></div></footer><script>var h=document.documentElement,b=document.body,st='scrollTop',sh='scrollHeight',progress=document.querySelector('#progress'),scrollpos=window.scrollY,header=document.getElementById("header"),navcontent=document.getElementById("nav-content"),scroll;document.addEventListener('scroll',function(){scroll=(h[st]||b[st])/((h[sh]||b[sh])-h.clientHeight)*100,progress.style.setProperty('--scroll',scroll+'%'),scrollpos=window.scrollY,scrollpos>10?(header.classList.add("bg-white"),header.classList.add("shadow"),navcontent.classList.remove("bg-gray-100"),navcontent.classList.add("bg-white")):(header.classList.remove("bg-white"),header.classList.remove("shadow"),navcontent.classList.remove("bg-white"),navcontent.classList.add("bg-gray-100"))}),document.getElementById('nav-toggle').onclick=function(){document.getElementById("nav-content").classList.toggle("hidden")},feather.replace()</script></body></html>

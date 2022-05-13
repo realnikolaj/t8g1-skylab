@@ -14,12 +14,12 @@ There are several pros and cons to using a proxy server. Security wise, a proxy 
 What is then bad about proxy servers? Well not much, but if the provider of the proxy server has malicious intent, it could cause harm for the client. As mentioned earlier, a proxy server keeps a cache for a faster browsing experience and to save bandwidth. THe problem with that is it could also store private information like passwords and other details, which the provider of the proxy server can have or gain access to. For that reason it is important to have trusted provider, or create a proxy server inhouse.
 
 ```python
-import 
+import cv2
 
 ```
 
 
-## 4. Have a common folder for the group to share files and logs
+## <a name="id-1c"></a> 4. Have a common folder for the group to share files and logs
 
 Firstly we created a folder on our group vm /usr/local/share
 

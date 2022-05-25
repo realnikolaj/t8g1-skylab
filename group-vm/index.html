@@ -188,31 +188,60 @@ $ chmod g+w /usr/local/share/shared
 </code></pre></div><p>Now each individual has access to their own directory, and the all have access to the shared directory. Now we have to make it so only the creator of the file in the shared direcotry can modify it.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>chmod +t /usr/local/share/shared
 </code></pre></div><p>We then setup an nfs server and mount our individual folder and the shared folder on our individual vms. We setup the nfs server on our group vm, and make sure we give rw access, so if the user mounting the nfs is in the correct group, he or she shoud have rw access.<br>To mount the nfs filesystem we need to have the nfs client package installed.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ sudo apt install nfs-common
 </code></pre></div><p>Then we mount:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ sudo mount -t nfs 192.168.165.1:/usr/local/share/<span style=color:#f92672>(</span>shared_or_emin...<span style=color:#f92672>)</span> /the_directory_we_want_to_mount_it_on_local_machine
-</code></pre></div><p>We can now through our own machine access our directories and the shared directory</p><h2 id=custom-ingress>Custom ingress</h2><h3 id=6-install-a-service-in-docker-of-your-choosing-as-group-which-you>6. Install a service in docker of your choosing as group which you</h3><p>think will need to share amongst the group,
-for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your
-group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on )</p><p>We&rsquo;ve opted to present a static website using Hugo and its official docker container as a service on the docker swarm.
+</code></pre></div><p>We can now through our own machine access our directories and the shared directory</p><h2 id=custom-ingress>Custom ingress</h2><h3 id=6-install-a-service-in-docker-of-your-choosing-as-group-which-you-think-will-need-to-share-amongst-the-group-for-example-authentication-server-dns-server-etc-create-a-dmza-separate-subnet-maybe-a-10-subnet-with-your-group-number-as-subnet-such-as-t1g1-is-1011-and-t1g2-is-1012-and-so-on->6. Install a service in docker of your choosing as group which you think will need to share amongst the group, for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on )</h3><p>We&rsquo;ve opted to present a static website using Hugo and its official docker container as a service on the docker swarm.
 The
 service is created and attached to a
-custom ingress network which is a an overlay type network exclusive for docker nodes running in swarm mode. The ingress
-network and any other custom overlay networks are connected to the docker daemons physical network on each
-individiul node through a virtual bridge <code>docker_gwbridge</code> enabling each node accept trafic destined for
-the swarm service even when no task is running on the specific node. This relieves
-the need
-for for
-manually
-creating a subnet or DMZ zone on our dhcp
-server and negates the need for manipulating the iptables in our firewall, since this is done by the docker service. A
-docker swarm automatically
-initializes
-an overlay network called <code>ingress</code> which we reconfigured using the bellow commands:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh> $ docker network rm ingress
- $ docker network create <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>    --driver overlay <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>    --ingress <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>    --subnet<span style=color:#f92672>=</span>10.81.0.0/16 <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>    --gateway<span style=color:#f92672>=</span>10.81.0.2 <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>    --opt com.docker.network.driver.mtu<span style=color:#f92672>=</span><span style=color:#ae81ff>1200</span> <span style=color:#ae81ff>\
-</span><span style=color:#ae81ff></span>    t8g1-ingress
-</code></pre></div><p>The ingress network, and any
+custom overlay network which is a network driver type in docker
+exclusively available for docker clients in swarm mode. As default an
+<code>ingress</code> network using the same overlay type network driver
+is created
+at swarm initialization. This network provides a routing mesh between
+swarm nodes and acts as a load-balancer for services created with the
+replicas option, enabling<br>distributed tasks to run accross the swarm nodes. All overlay type
+networks, both
+the default ingress and any custom created overlay networks gets bridged
+to the particular host where the docker daemon is running and can be
+seen using <code>ip address show</code> command at a shell prompt on
+the host showing a &ldquo;docker_gwbridge&rdquo; network along with a &ldquo;docker0&rdquo;
+device which is the corresponding bridge for containers not connected to
+any overlay type networks.</p><p>A default bridge associated with swarm overlay networks is used
+and/or created once the swarm is initialized or when a node joins the
+swarm.
+We use a custom created overlay bridge to control the subnet from which
+containers or services on the swarm communicates at and to truly
+replicate an actual subnet on the network we statically set a single ip
+address for which
+services or containers should at deafult bind to, disabled the
+default ip
+masquerading option and disabled inter container connictivity by
+issuing this command <strong>before</strong> initializing the swarm on Group VM:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>docker network create <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --subnet 10.81.10.0/24 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --opt com.docker.network.bridge.host_binding_ipv4<span style=color:#f92672>=</span>10.81.10.25 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --opt com.docker.network.bridge.name<span style=color:#f92672>=</span>docker_gwbridge <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --opt com.docker.network.bridge.enable_icc<span style=color:#f92672>=</span>false <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --opt com.docker.network.bridge.enable_ip_masquerade<span style=color:#f92672>=</span>false <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   **docker_gwbridge**
+</code></pre></div><p>Creating this bridge before initializing a swarm allows for setting
+this custom parameters and forces the docker client to use this bridge
+to connect swarm services and containers on overlay networks to the
+host.
+Setting the &ldquo;[&mldr;].bridge.enable_icc&rdquo; option to false will isolate the
+services and containers on overlay networks from any regular container
+instances,
+prohibiting any containers not
+connected to overlay networks from accessing the swarm services.
+TCP ports 2377, 7946 and UDP ports 4789 must also be enabled in the
+firewall to allow for cluster management, node communication and
+overlay traffic respectively, on all nodes.</p><p>With the default gateway we create a custom overlay named
+&ldquo;t8g1-squid-overlay&rdquo; from which any swarm node can access</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>$ docker network create <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --driver overlay <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --opt encrypted <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --subnet 10.81.30.0/24 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --gateway<span style=color:#f92672>=</span>10.81.30.2 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --opt com.docker.network.driver.mtu<span style=color:#f92672>=</span><span style=color:#ae81ff>1500</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   --opt com.docker.network.bridge.enable_ip_masquerade<span style=color:#f92672>=</span>false <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>   t8g1-squid-overlay
+</code></pre></div><p>Both the ingress network, and any
 overlay type
 networks encrypts management trafic between the nodes rotating the AES key every 12 hours. A docker swarm
 also allows for splitting management and data trafic onto separate network interfaces using the
@@ -235,8 +264,10 @@ It is recommended to always create separate custom overlay networks for independ
 be taken to secure the network and especially the containers running withing it.
 As a deafult docker will open any published ports from services and standalone containers to the external network,
 and running these services and containers in a non-rootless docker environment which is dictated by the docker
-engine when running docker in swarm mode, exposes the integrety of the entire network. Luckyli the official
-documentation for docker is an endless source of consideration and warnings regarding the &ldquo;feature&rdquo; and supplies
+engine when running docker in swarm mode, exposes the integrity of the
+entire network. Luckily the official
+documentation for docker is an endless source of considerations and
+warnings regarding this &ldquo;feature&rdquo; and provides
 several recommendations for securing the environment.
 Docker creates new iptables chains per default and drops all forwarding on the host, which is an issue for the group
 vm which also acts as a router. The following command reenables forwarding on the group vm:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Sh data-lang=Sh>$ iptables -I DOCKER-USER -i src_if -o dst_if -j ACCEPT
@@ -302,6 +333,36 @@ $IPTABLES -I DOCKER_USER -j block
 
 <span style=color:#75715e>#Masquerade</span>
 $IPTABLES -t nat -A POSTROUTING -o $INET_IF -j MASQUERADE
+</code></pre></div><h3 id=services-and-stack-deplot>Services and stack deplot</h3><hr><p>Using docker compose plugin we can define a set of services to run,
+making ochestration of services on a swarm resemble the conventional
+docker compose scenarios. We subsitity the version &ldquo;2&rdquo; with &ldquo;3&rdquo; and use
+the command <code>docker stack deploy</code> and point this to our
+stack docker compose file which looks like this:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>version: <span style=color:#e6db74>&#34;3.9&#34;</span>
+
+services:
+  web:
+    image: 127.0.0.1:5000/stackdemo
+    build: .
+    ports:
+      - <span style=color:#e6db74>&#34;8000:8000&#34;</span>
+  redis:
+    image: redis:alpine
+</code></pre></div><p>As shown we can define any configuration files needed in the t8g1demo
+folder such as the squid.conf configuration file used to define the
+allowed networks and access control list ACL which allow or prohibits
+access of various ports through our proxy.</p><p>First we must include the compose docker plugin. We install the official binaries
+avaiable from docker docs</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># First we download the binaries in to a docker engine \ </span>
+<span style=color:#75715e># recognizabel directory</span>
+$ DOCKER_CONFIG<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>DOCKER_CONFIG<span style=color:#66d9ef>:-</span>$HOME/.docker<span style=color:#e6db74>}</span>
+$ mkdir -p $DOCKER_CONFIG/cli-plugins
+$ curl -SL https://github.com/docker/compose/releases/download/v2.5. <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+ 
+<span style=color:#75715e># Set the file permission for execution</span>
+$ chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+ 
+<span style=color:#75715e># Test the plugin by echoing the version</span>
+$ docker compose version
 </code></pre></div><hr class="border-b-2 border-gray-400 mt-8 mx-4"><div class="font-sans flex justify-between content-center px-4 pb-12"><div class=text-left><p><a href=https://realnikolaj.github.io/t8g1-skylab/ class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">&lt;
 Previous Page</a></p></div><div class=text-right><p><a href=../topology class="break-normal text-base md:text-sm text-green-500 font-bold no-underline hover:underline">Next
 Page ></a></p></div></div></div></div><footer class="bg-white border-t border-gray-400 shadow"><div class="container max-w-4xl mx-auto flex py-8"><div class="w-full mx-auto flex flex-col"><div class="flex w-full"><div class="px-8 mx-auto"><ul class="pt-3 list-none px-0 flex"><li><a class="text-gray-600 no-underline py-2" href=../explainer-notebook.html><i data-feather=file-text class=footer-icon></i></a></li><li><a class="text-gray-600 no-underline py-2" href=https://github.com/realnikolaj/t8g1-skylab><i data-feather=github class=footer-icon></i></a></li><li><a class="text-gray-600 no-underline py-2" href=https://doc.opensuse.org><i data-feather=hard-drive class=footer-icon></i></a></li></ul></div></div><div class="w-full mx-auto text-center"><ul class="list-reset items-center text-md py-6 list-none flex"><li class=mx-auto><p class="inline-block text-gray-600 mx-4 font-semibold capitalized">Nikolaj S. Povlsen, Saif Ali, Emin Olcer</p></li></ul></div></div></div></footer><script>var h=document.documentElement,b=document.body,st='scrollTop',sh='scrollHeight',progress=document.querySelector('#progress'),scrollpos=window.scrollY,header=document.getElementById("header"),navcontent=document.getElementById("nav-content"),scroll;document.addEventListener('scroll',function(){scroll=(h[st]||b[st])/((h[sh]||b[sh])-h.clientHeight)*100,progress.style.setProperty('--scroll',scroll+'%'),scrollpos=window.scrollY,scrollpos>10?(header.classList.add("bg-white"),header.classList.add("shadow"),navcontent.classList.remove("bg-gray-100"),navcontent.classList.add("bg-white")):(header.classList.remove("bg-white"),header.classList.remove("shadow"),navcontent.classList.remove("bg-white"),navcontent.classList.add("bg-gray-100"))}),document.getElementById('nav-toggle').onclick=function(){document.getElementById("nav-content").classList.toggle("hidden")},feather.replace()</script></body></html>

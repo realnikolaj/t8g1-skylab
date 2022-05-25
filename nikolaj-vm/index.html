@@ -106,7 +106,13 @@ a higher level of network integrity by allowing only a subset of
 container images to be deployed throughout all docker nodes. This
 measure is highly relevant for docker clusters running in swarm mode
 where rootless docker is not supported <a href=../group-vm>See rootless docker in section:
-Group-vm</a></p><h2 id=security>Security</h2><p>Our reasonably hardened firewall doesn&rsquo;t cover mitm attacks such as
+Group-vm</a></p><h4 id=hugo-container>Hugo container</h4><hr><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell> docker run --rm -it <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  --name hugo <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  -v /home/nik/public/:/src <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  -p 1313:1313 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  klakegg/hugo:ubuntu <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  server
+</code></pre></div><h2 id=security>Security</h2><p>Our reasonably hardened firewall doesn&rsquo;t cover mitm attacks such as
 rouge services or containers, but by utilizing docker clients extensive
 nework measure and implementing the same overriding rule on each
 individual client running docker, we can lock back down all routes and

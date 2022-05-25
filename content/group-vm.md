@@ -166,37 +166,80 @@ We can now through our own machine access our directories and the shared directo
 
 
 ## Custom ingress
-### 6. Install a service in docker of your choosing as group which you 
-think will need to share amongst the group, 
-      for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your 
-      group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on ) 
+### 6. Install a service in docker of your choosing as group which you think will need to share amongst the group, for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on ) 
+
 
 We've opted to present a static website using Hugo and its official docker container as a service on the docker swarm. 
 The 
 service is created and attached to a 
-custom ingress network which is a an overlay type network exclusive for docker nodes running in swarm mode. The ingress 
-network and any other custom overlay networks are connected to the docker daemons physical network on each 
-individiul node through a virtual bridge <code>docker_gwbridge</code> enabling each node accept trafic destined for 
-the swarm service even when no task is running on the specific node. This relieves 
-the need 
-for for 
-manually 
-creating a subnet or DMZ zone on our dhcp 
-server and negates the need for manipulating the iptables in our firewall, since this is done by the docker service. A 
-docker swarm automatically 
-initializes 
-an overlay network called <code>ingress</code> which we reconfigured using the bellow commands:
-```Sh
- $ docker network rm ingress
- $ docker network create \
-    --driver overlay \
-    --ingress \
-    --subnet=10.81.0.0/16 \
-    --gateway=10.81.0.2 \
-    --opt com.docker.network.driver.mtu=1200 \
-    t8g1-ingress
+custom overlay network which is a network driver type in docker 
+exclusively available for docker clients in swarm mode. As default an 
+<code>ingress</code> network using the same overlay type network driver 
+is created 
+at swarm initialization. This network provides a routing mesh between 
+swarm nodes and acts as a load-balancer for services created with the 
+replicas option, enabling  
+distributed tasks to run accross the swarm nodes. All overlay type 
+networks, both 
+the default ingress and any custom created overlay networks gets bridged 
+to the particular host where the docker daemon is running and can be 
+seen using <code>ip address show</code> command at a shell prompt on 
+the host showing a "docker_gwbridge" network along with a "docker0" 
+device which is the corresponding bridge for containers not connected to 
+any overlay type networks.
+
+A default bridge associated with swarm overlay networks is used 
+and/or created once the swarm is initialized or when a node joins the 
+swarm.
+We use a custom created overlay bridge to control the subnet from which 
+containers or services on the swarm communicates at and to truly 
+replicate an actual subnet on the network we statically set a single ip 
+address for which
+services or containers should at deafult bind to, disabled the 
+default ip 
+masquerading option and disabled inter container connictivity by 
+issuing this command **before** initializing the swarm on Group VM:
+```shell
+docker network create \
+   --subnet 10.81.10.0/24 \
+   --opt com.docker.network.bridge.host_binding_ipv4=10.81.10.25 \
+   --opt com.docker.network.bridge.name=docker_gwbridge \
+   --opt com.docker.network.bridge.enable_icc=false \
+   --opt com.docker.network.bridge.enable_ip_masquerade=false \
+   **docker_gwbridge**
 ```
-The ingress network, and any 
+Creating this bridge before initializing a swarm allows for setting 
+this custom parameters and forces the docker client to use this bridge 
+to connect swarm services and containers on overlay networks to the 
+host.
+Setting the "[...].bridge.enable_icc" option to false will isolate the 
+services and containers on overlay networks from any regular container 
+instances,
+prohibiting any containers not
+connected to overlay networks from accessing the swarm services.
+TCP ports 2377, 7946 and UDP ports 4789 must also be enabled in the 
+firewall to allow for cluster management, node communication and 
+overlay traffic respectively, on all nodes.
+
+
+
+ 
+With the default gateway we create a custom overlay named 
+"t8g1-squid-overlay" from which any swarm node can access
+```shell
+$ docker network create \
+   --driver overlay \
+   --opt encrypted \
+   --subnet 10.81.30.0/24 \
+   --gateway=10.81.30.2 \
+   --opt com.docker.network.driver.mtu=1500 \
+   --opt com.docker.network.bridge.enable_ip_masquerade=false \
+   t8g1-squid-overlay
+```
+
+
+
+Both the ingress network, and any 
 overlay type 
 networks encrypts management trafic between the nodes rotating the AES key every 12 hours. A docker swarm 
 also allows for splitting management and data trafic onto separate network interfaces using the 
@@ -225,8 +268,10 @@ As mentioned simple firewall rules gets cluttered by the docker clients running 
 be taken to secure the network and especially the containers running withing it.
 As a deafult docker will open any published ports from services and standalone containers to the external network, 
 and running these services and containers in a non-rootless docker environment which is dictated by the docker 
-engine when running docker in swarm mode, exposes the integrety of the entire network. Luckyli the official 
-documentation for docker is an endless source of consideration and warnings regarding the "feature" and supplies 
+engine when running docker in swarm mode, exposes the integrity of the 
+entire network. Luckily the official 
+documentation for docker is an endless source of considerations and 
+warnings regarding this "feature" and provides 
 several recommendations for securing the environment.
 Docker creates new iptables chains per default and drops all forwarding on the host, which is an issue for the group 
 vm which also acts as a router. The following command reenables forwarding on the group vm:
@@ -299,3 +344,47 @@ $IPTABLES -I DOCKER_USER -j block
 #Masquerade
 $IPTABLES -t nat -A POSTROUTING -o $INET_IF -j MASQUERADE
 ```
+
+### Services and stack deplot
+---
+Using docker compose plugin we can define a set of services to run, 
+making ochestration of services on a swarm resemble the conventional 
+docker compose scenarios. We subsitity the version "2" with "3" and use 
+the command <code>docker stack deploy</code> and point this to our 
+stack docker compose file which looks like this:
+```shell
+version: "3.9"
+
+services:
+  web:
+    image: 127.0.0.1:5000/stackdemo
+    build: .
+    ports:
+      - "8000:8000"
+  redis:
+    image: redis:alpine
+```
+
+As shown we can define any configuration files needed in the t8g1demo 
+folder such as the squid.conf configuration file used to define the 
+allowed networks and access control list ACL which allow or prohibits 
+access of various ports through our proxy.
+
+First we must include the compose docker plugin. We install the official binaries 
+avaiable from docker docs
+
+```shell
+# First we download the binaries in to a docker engine \ 
+# recognizabel directory
+$ DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+$ mkdir -p $DOCKER_CONFIG/cli-plugins
+$ curl -SL https://github.com/docker/compose/releases/download/v2.5. \
+0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+ 
+# Set the file permission for execution
+$ chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+ 
+# Test the plugin by echoing the version
+$ docker compose version
+ ```
+

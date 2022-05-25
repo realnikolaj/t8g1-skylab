@@ -1,7 +1,7 @@
 ---
 title: Topology
 prev: emin-vm
-next: about
+next: squid-logs
 ---
 
 ## Topology

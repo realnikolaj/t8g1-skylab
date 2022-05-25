@@ -16,6 +16,17 @@ measure is highly relevant for docker clusters running in swarm mode
 where rootless docker is not supported [See rootless docker in section: 
 Group-vm](/group-vm)  
 
+#### Hugo container
+---
+```shell
+ docker run --rm -it \
+  --name hugo \
+  -v /home/nik/public/:/src \
+  -p 1313:1313 \
+  klakegg/hugo:ubuntu \
+  server
+```
+
 ## Security
 Our reasonably hardened firewall doesn't cover mitm attacks such as 
 rouge services or containers, but by utilizing docker clients extensive 

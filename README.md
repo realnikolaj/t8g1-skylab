@@ -1,57 +1,78 @@
-# At T8G1-Skylab we host, deploy and maintain services used by workers throughout the organization. Our philosophy is:  
-> Can it be written into a feature request - then we can deploy it.
+# project-website-template
 
-## About
-This site presents the internal services and their configurations provided by T8G1-Skylab group, the cluster's network 
-topology and documentation for users and administrators along with the security implemented and how to do a feature 
-request.
+__A website template for your final project__ 🔮
 
-### Tasks
+By using this template you would be able to create your own website and deploy it on Github Pages. This project creates a static website, to test it locally (on your machine) you need to install [Hugo](https://gohugo.io/getting-started/installing/). This facilitates you to develop it and display the changes in real-time.
 
-1. On group VM:
-   1. [x] Install Docker on Group VM and move squid into docker  
-   2. [x] Make it possible that all traffic originating from GroupVM should pass through squid and firewall is 
-      adjusted accordingly  
-   3. [ ] Analyze the pros/cons of using proxy for all traffic originating from individual VMs in the group and decide  
-        on it. Document your resons and choice and do the needful depending on the decision  
-   4. [ ] Make it possible for all individual members of the group to be able to share documents in a common folder 
-      where they will update logs of what change they have made to the Group VM and only the owner of the file is 
-      able to modify/delete the file. Rest should be able to read all information in the file. So, each member should have his own file  
-   5. [ ] [optional] place log files in a container separate container. How does it affect security  
-   6. [ ] Install a service in docker of your choosing as group which you think will need to share amongst the group, 
-      for example authentication server, DNS server etc. Create a DMZ(a separate subnet –maybe a 10 subnet with your 
-      group number as subnet such as t1g1 is 10.11 and t1g2 is 10.12 and so on )  
-   7. [ ] Update the firewall to allow limited traffic from DMZ only to be able to use that service  
-2. In your individual VM
-    1. [x] Setup & Configure the LXD or docker  
-    2. [ ] [optional] get ip address for LXD or Docker from dhcp server on
-groupVM  
-    3. [ ] Setup security for your individual server and the containers you will run  
-    4. [ ] Discuss the security and other networking considerations for keeping containers isolated from local 
-       network and making them available over the local network  
-3. Design a network topology (not configure) for the whole group  
-   1. [ ] Database server (mysql, mongo,postgres)  
-   2. [ ] Webserver (nginx,apache, caddy)  
-   3. [ ] Real time communication server (jitsi, matrix)
-   4. [ ] Git server  
-   5. [ ] Any other type of container you think will be relevant
-   6. [ ] File server (Seafile, owncloud,nextcloud)  
-4. [ ] Decide where in the topology will you place the various servers. Setting up lxd on GroupVM is not a trivial task 
-   so anything there has to docker but in the documentation you can argue if you would rather used lxd and why?  
-5. [ ] Which virtualization technology between docker and lxd will you use for the particular server and why?  
-6. [ ] You should setup minimum of two docker container or lxd container on your individual VM  
-7. [ ] [optional] you can configure both docker and LXD and make them work together  
-8. [ ] Reasonable firewall and other security measures should be implemented and documented for the groupVM and the 
-   individual VM  
-9. [ ] Setup and discuss the security for each server(container) individually and for the setup as a whole  
-   1. [ ] What do you think the security is for your setup  
-   2. [ ] Talk about strength and vulnerabilities of your infrastructure  
-10. [ ] Launch attacks like DDOS on other servers, use various tools to check
-vulnerabilities in the server setup of other groups  
-    1. [ ] You can reconfigure your switch(just add the vlan of the group
-so that you can get ip from their dhcp) to access other groups local network in the class  
-    2. [ ] Then you can run these vulnerability scanners like nmap and nikto to find out more about their network, 
-       services etc.  
-    3. [ ] Document your findings, vulnerabilities and suggest way to protect/attack the vulnerabilities  
+Therefore, you can click on the [***Use this template***](https://github.com/realnikolaj/t8g1-skylab/generate) button (including all branches!) 😉
 
-62501 Linux Server and Network Course at DTU, spring 2022 edition.
+[**DEMO**](https://realnikolaj.github.io/t8g1-skylab/nikolaj-vm/)
+
+More details are explained in depth below. To briefly explain how this project works: 
+* You can write all the content in Markdown using the same syntax you may have already used in Jupyter Notebooks
+* Hugo makes it easier to build all the HTML web pages and reuse the same template across different pages
+* Github Actions allows running for free a job that builds and deploy the website
+* Github Pages offers to publish a static website for free
+
+## ❓ How to
+
+### Develop
+
+If you managed to install Hugo on your machine ([official guide](https://gohugo.io/getting-started/installing/) or an alternative for [Windows](https://www.techielass.com/how-to-install-hugo-on-windows-10/) users), and cloned the repo, you can run `hugo serve`. At this point, you can surf your website from a browser at: [http://localhost:1313/](http://localhost:1313/).
+
+When you commit changes to the main branch, a job (which runs using Github Actions) will build a new copy of your website and publish it on Github Actions. You might need to check the repo settings (under the 'Pages' tab).
+
+### Add new content
+
+In the `content/` folder you can find several markdown files. `_index.md` would be your homepage. Therefore, you are free to create new markdown files. You need to make sure to include these fields in the beginning of your file:
+
+```markdown
+---
+title: Page title
+prev: link-prev-page
+next: link-next page
+---
+```
+
+Whereas, `prev` and `next` are the link to the pages displayed at the bottom of the page. If omitted, no link is going to be displayed!
+
+Please, check the examples provided and the source code. By using Markdown you will be able to include:
+
+* Formatted text (bold, italic)
+* Images
+* Tables
+* Math formula
+* Code
+* Quotes
+* Lists
+
+### Update `config.toml`
+
+The [`config.toml`](https://github.com/realnikolaj/t8g1-skylab/blob/main/config/_default/config.toml) file contains many variables related to your project. Here you can update much information such as: Project title, Authors, Links, Navbar. The changes are propagated and displayed automatically on every page you've created.
+
+Make sure to update the `baseUrl` variable! This variable is extremely important for publishing the website on Github Pages. The variable should follow this format `https://<github_username>.github.io/<repo_name>`.
+
+### Assets 
+
+Images and other files can also make public together with the website. They must be stored in the `static/` folder. You may find already the DTU logo saved there.
+
+### Build and deploy
+
+At every change committed to the `main` branch a job running using 
+Github Actions will build and deploy your website on Github Actions. 
+NOTE you might need to enable github pages and allow the runner repo 
+permissions. The 
+[job workflow](https://github.com/realnikolaj/t8g1-skylab/blob/.github/workflows/gh-pages.yml) is written in YAML, you shouldn't need to apply any changes. It is triggered every time a new commit is pushed to the `main` branch, and it builds and publishes a new version of the website on the `gh-pages` branch.
+
+The website URL is going to be live at: `https://<github_username>.github.io/<repo_name>`.
+Please make sure to check the repository settings, you would need to enable Github Pages: `Settings > Pages`. In `Source` select `gh-pages` as branch and keep `/ (root)` as directory. Click on Save 😉
+
+## Tech stuff 🤠
+
+This template has been built on top of [Minimal Blog](https://github.com/tailwindtoolbox/Minimal-Blog) and wrapped into a [Hugo](https://gohugo.io/) website. 
+
+Some of the technologies used are:
+* [Hugo](https://gohugo.io/)
+* [Tailwind CSS](https://tailwindcss.com/)
+* [MathJax](https://www.mathjax.org/)
+* [Feather Icons](https://feathericons.com/)
